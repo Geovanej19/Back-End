@@ -13,47 +13,37 @@ const entradaDeDados = readline.createInterface({
     output: process.stdout
 })
 
-entradaDeDados.question("Olá doutor, digite seu nome: ", function(nomeDoutor){
+entradaDeDados.question("Digite seu nome: ", function(nomeUsuario){
 
-    if(funcoesImc.estaVazio(nomeDoutor)){
-        console.log("Erro: Nome do doutor não pode estar vazio.")
-        entradaDeDados.close()
-        return
+  if(funcoesImc.estaVazio(nomeUsuario)){
+    console.log("Erro: Nome do usuário não pode estar vazio.")
+    entradaDeDados.close()
+    return
     }
+    
+    entradaDeDados.question("Digite seu peso: ", function(peso){
 
-    entradaDeDados.question("Digite o nome do paciente: ", function(nomePaciente){
+      entradaDeDados.question("Digite sua altura: ", function(altura){
 
-        if(funcoesImc.estaVazio(nomePaciente)){
-            console.log("Erro: Nome do paciente não pode estar vazio.")
-            entradaDeDados.close()
-            return
+        let imc = funcoesImc.calcularIMC(peso, altura)
+
+        if(imc === false){
+          console.log("Erro: Peso ou altura inválidos.")
+          entradaDeDados.close()
+          return
         }
 
-        entradaDeDados.question("Digite o peso do paciente: ", function(peso){
+        let classificacao = funcoesImc.classificarIMC(imc)
 
-            entradaDeDados.question("Digite a altura do paciente: ", function(altura){
+        console.log(`\n ************************* RESULTADO IMC ****************************`)
+        console.log(`\nUsuário: ${nomeUsuario}`)
+        console.log(`Peso: ${peso} KG`)
+        console.log(`Altura: ${altura}`)
+        console.log(`IMC: ${imc.toFixed(2)}`)
+        console.log(`Classificação: ${classificacao}`)
+        console.log(`\n *********************************************************************`)
 
-                let imc = funcoesImc.calcularIMC(peso, altura)
-
-                if(imc === false){
-                    console.log("Erro: Peso ou altura inválidos.")
-                    entradaDeDados.close()
-                    return
-                }
-
-                let classificacao = funcoesImc.classificarIMC(imc)
-
-                console.log("\n" + "*".repeat(15) + " Calculadora IMC " + "*".repeat(15))
-                console.log("Doutor:", nomeDoutor)
-                console.log("Paciente:", nomePaciente)
-                console.log("Peso:", peso, "Kg")
-                console.log("Altura:", altura, "m")
-                console.log("IMC:", imc.toFixed(2))
-                console.log("Classificação:", classificacao)
-                console.log("*".repeat(45) + "\n")
-
-                entradaDeDados.close()
-            })
-        })
+        entradaDeDados.close()
     })
+  })
 })
