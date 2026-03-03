@@ -1,8 +1,8 @@
 /******************************************************************************************************************************
- * Funções usadas para exercícios
+ * Funções para exercícios
  * Data: 27/02/2026
- * Autor: Pedro
- * Versão: 2.2 (Todas as funções como const)
+ * Autor: Geovane
+ * Versão: 1.0
  *****************************************************************************************************************************/
 const estaVazio = function(valor) {
     if (!valor || String(valor).trim() === "") {
@@ -24,9 +24,9 @@ const validarNumero = function(valor) {
     }
 }
 
-/*****************************************************************
- * 2. EXERCÍCIO 01 - IMC
- *****************************************************************/
+
+ // *****************************  EXERCÍCIO 01 - IMC ********************************
+
 const calcularIMC = function(peso, altura) {
     const pesoNum = validarNumero(peso)
     const alturaNum = validarNumero(altura)
@@ -59,9 +59,9 @@ const classificarIMC = function(imc) {
     }
 }
 
-/*****************************************************************
- * 3. EXERCÍCIO 02 - MÉDIA ESCOLAR
- *****************************************************************/
+
+ // *********************** EXERCÍCIO 02 - MÉDIA ESCOLAR ****************************************
+
 const calcularMedia = function(n1, n2, n3, n4) {
     const nota1 = validarNumero(n1)
     const nota2 = validarNumero(n2)
@@ -89,7 +89,7 @@ const calcularMediaExame = function(media, notaExame) {
     return mediaFinal
 }
 
-const definirAluno = function(sexo) {
+const sexoAluno = function(sexo) {
     if (!sexo) return "aluno"
     if (sexo.toLowerCase() === "f") {
         return "aluna"
@@ -98,7 +98,7 @@ const definirAluno = function(sexo) {
     }
 }
 
-const definirProfessor = function(sexo) {
+const sexoProfessor = function(sexo) {
     if (!sexo) return "professor"
     if (sexo.toLowerCase() === "f") {
         return "professora"
@@ -115,6 +115,6 @@ module.exports = {
     classificarIMC,
     calcularMedia,
     calcularMediaExame,
-    definirAluno,
-    definirProfessor,
+    sexoAluno,
+    sexoProfessor,
 }

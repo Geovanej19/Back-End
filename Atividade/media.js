@@ -1,12 +1,12 @@
 /*******************************************************************************************************************************
  * Exercício 02 - Média
- * Autor: Pedro
+ * Autor: Geovane
  * Data: 27/02/2026
  * Versão: 1.0
  *******************************************************************************************************************************/
 /*******************************************************************************************************************************
  * Exercício 02 - Média
- * Autor: Pedro
+ * Autor: Geovane
  * Data: 27/02/2026
  * Versão: 3.1 (Sem função finalizar, saída direta no app.js)
  *******************************************************************************************************************************/
@@ -123,25 +123,25 @@ entradaDeDados.question("Digite o nome do aluno: ", function(nomeAluno){
 
                                             // NOVA REGRA: aprova no exame apenas se media >= 60 e exame >= 60
                                             if(media >= 60 && exame >= 60){
-                                                situacao = "Aprovado em exame"
+                                                situacao = "Aprovado no exame"
                                             } else {
-                                                situacao = "Reprovado em exame"
+                                                situacao = "Reprovado no exame"
                                             }
 
                                             // SAÍDA FORMATADA
-                                            console.log("\n" + "*".repeat(15) + " RESULTADO FINAL " + "*".repeat(15))
-                                            console.log("Aluno:", nomeAluno)
-                                            console.log("Curso:", curso)
-                                            console.log("Disciplina:", disciplina)
-                                            console.log("Professor:", nomeProfessor)
-                                            console.log("Média Final:", media.toFixed(2))
+                                            console.log(`\n *********** RESULTADO FINAL ************`)
+                                            console.log(`Aluno: ${nomeAluno}`)
+                                            console.log(`Curso: ${curso}`)
+                                            console.log(`Disciplina: ${disciplina}`)
+                                            console.log(`Professor: ${nomeProfessor}`)
+                                            console.log(`Média Final: ${media.toFixed(2)}`)
 
                                             if(exame !== null){
-                                                console.log("Nota do Exame:", exame)
-                                                console.log("Média Final com Exame:", mediaFinal.toFixed(2))
+                                                console.log(`Nota do Exame: ${exame}`)
+                                                console.log(`Média Final com Exame: ${mediaFinal.toFixed(2)}`)
                                             }
 
-                                            console.log("Situação:", situacao)
+                                            console.log(`Situação: ${situacao}`)
                                             console.log("*".repeat(45) + "\n")
 
                                             entradaDeDados.close()
@@ -153,14 +153,14 @@ entradaDeDados.question("Digite o nome do aluno: ", function(nomeAluno){
                                     }
 
                                     // SAÍDA FORMATADA (para aprovado direto ou reprovado direto)
-                                    console.log("\n" + "*".repeat(15) + " RESULTADO FINAL " + "*".repeat(15))
-                                    console.log("Aluno:", nomeAluno)
-                                    console.log("Curso:", curso)
-                                    console.log("Disciplina:", disciplina)
-                                    console.log("Professor:", nomeProfessor)
-                                    console.log("Média Final:", media.toFixed(2))
-                                    console.log("Situação:", situacao)
-                                    console.log("*".repeat(45) + "\n")
+                                    console.log(`\n ***************** RESULTADO FINAL ******************`)
+                                    console.log(`Aluno: ${nomeAluno}`)
+                                    console.log(`Curso: ${curso}`)
+                                    console.log(`Disciplina:, ${disciplina}`)
+                                    console.log(`Professor: ${nomeProfessor}`)
+                                    console.log(`Média Final: ${media.toFixed(2)}`)
+                                    console.log(`Situação: ${situacao}`)
+                                    console.log(`\n****************************************************** \n`)
 
                                     entradaDeDados.close()
 
