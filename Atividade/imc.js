@@ -1,10 +1,10 @@
 /*******************************************************************************************************************************
  * Exercício 01 - Imc 
- * Autor: Pedro
+ * Autor: Geovane
  * Data: 27/02/2026
  * Versão: 1.0
  *******************************************************************************************************************************/
-//Chamamso as funções dentro do arquivo que ira expor os resultados
+//Chamando as funções dentro do arquivo que ira expor os resultados
 const readline = require("readline")
 const funcoesImc = require("./modulo/calcular.js")
 
@@ -13,6 +13,7 @@ const entradaDeDados = readline.createInterface({
     output: process.stdout
 })
 
+//Entrada do nome do usuário
 entradaDeDados.question("Digite seu nome: ", function(nomeUsuario){
 
   if(funcoesImc.estaVazio(nomeUsuario)){
@@ -21,8 +22,12 @@ entradaDeDados.question("Digite seu nome: ", function(nomeUsuario){
     return
     }
     
+    //Entrada do peso 
     entradaDeDados.question("Digite seu peso: ", function(peso){
 
+
+
+      //Entrada da altura
       entradaDeDados.question("Digite sua altura: ", function(altura){
 
         let imc = funcoesImc.calcularIMC(peso, altura)
