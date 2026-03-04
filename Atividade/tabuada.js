@@ -62,6 +62,7 @@ entradaDeDados.question('Digite a tabuada inicial: ', function(tabuaI){
                 )
 
                 entradaDeDados.close()
+                return tabuada
             })
         })
     })
