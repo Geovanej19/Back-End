@@ -195,8 +195,32 @@ const fatorial = function(valor){
 
     sequencia += '1'
 
-    return`Fatorial de ${Number(numero)} é ${sequencia} = ${resultado}`
+    return`Fatorial de ${numero} é ${sequencia} = ${resultado}`
+
 }
+
+
+
+// ************************************ Exercício 5 ******************************************
+
+const validarNumeros = function(valor1, valor2){
+
+    const n1 = Number(valor1)
+    const n2 = Number(valor2)
+
+    if (
+        Number.isNaN(n1) || Number.isNaN(n2) ||
+        !Number.isInteger(n1) || !Number(n2) ||
+        n1 < 0 || n1 > 500 ||
+        n2 < 100 || n2 > 1000
+    ) {
+        return false
+
+    }
+
+    return true
+}
+
 
 
 
@@ -217,7 +241,5 @@ module.exports = {
     valorTabuada,
     validarFatorial,
     fatorial,
-
-
-
+    validarNumeros,
 }
