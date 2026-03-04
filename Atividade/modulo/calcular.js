@@ -60,7 +60,7 @@ const classificarIMC = function(imc) {
 }
 
 
- // *********************** EXERCÍCIO 02 - MÉDIA ESCOLAR ****************************************
+ // ******************************* EXERCÍCIO 02 - MÉDIA ESCOLAR ****************************************
 
 const calcularMedia = function(n1, n2, n3, n4) {
     const nota1 = validarNumero(n1)
@@ -108,6 +108,55 @@ const sexoProfessor = function(sexo) {
 }
 
 
+
+
+// **************************************** Exercício 03 ************************************************
+
+const entradaTabuada = function(valor){
+
+    if(valor >= 2 && valor <= 100){
+        return true
+
+    }else{
+        return false
+    }
+}
+
+
+const valorTabuada = function(tabuada){
+
+    if(tabuada >= 1 && tabuada <= 50){
+        return true
+
+    }else{
+        return false
+    }
+}
+
+
+
+
+function calcularTabuada(tabInicial, tabFinal, contInicial, contFinal) {
+
+    let tab = tabInicial
+
+    while (tab <= tabFinal) {
+
+        let cont = contInicial
+
+        while (cont <= contFinal) {
+            console.log(`${tab} x ${cont} = ${tab * cont}`)
+            cont++
+        }
+        console.log('')
+        tab++
+    }
+}
+
+
+
+
+
 module.exports = {
     estaVazio,
     validarNumero,
@@ -117,4 +166,8 @@ module.exports = {
     calcularMediaExame,
     sexoAluno,
     sexoProfessor,
+    calcularTabuada,
+    entradaTabuada,
+    valorTabuada
+
 }

@@ -4,6 +4,8 @@
  * Data: 27/02/2026
  * Versão: 1.0
  *******************************************************************************************************************************/
+
+
 //Chamando as funções dentro do arquivo que ira expor os resultados
 const readline = require("readline")
 const funcoesImc = require("./modulo/calcular.js")
@@ -25,10 +27,22 @@ entradaDeDados.question("Digite seu nome: ", function(nomeUsuario){
     //Entrada do peso 
     entradaDeDados.question("Digite seu peso: ", function(peso){
 
+      if(funcoesImc.estaVazio(peso)){
+        console.log('Erro: o peso não pode estar vazio')
+        entradaDeDados.close()
+        return
+      }
+
 
 
       //Entrada da altura
       entradaDeDados.question("Digite sua altura: ", function(altura){
+
+        if(funcoesImc.estaVazio(altura)){
+          console.log('Erro: A altura não pode estar vazia')
+          entradaDeDados.close()
+          return
+        }
 
         let imc = funcoesImc.calcularIMC(peso, altura)
 
