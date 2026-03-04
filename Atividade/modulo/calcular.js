@@ -156,6 +156,52 @@ function calcularTabuada(tabInicial, tabFinal, contInicial, contFinal) {
 
 
 
+// ************************************ Exercício 04 ****************************************
+
+const validarFatorial = function(valor){
+
+    const numero = Number(valor)
+
+    if(Number.isNaN(numero)){
+        return false
+
+    }else if(!Number.isInteger(numero)){
+        return false
+
+    }else if(numero === 0){
+        return false
+
+    }else if(numero === 1){
+        return false
+    }
+
+    return true 
+}
+
+
+const fatorial = function(valor){
+
+    let numero = Number(valor)
+    let resultado = 1
+    let contador = numero
+    let sequencia = ''
+
+    while (contador > 1){
+        resultado = resultado * contador
+        sequencia += contador + 'x'
+        contador--
+
+    }
+
+    sequencia += '1'
+
+    return`Fatorial de ${Number(numero)} é ${sequencia} = ${resultado}`
+}
+
+
+
+
+
 
 module.exports = {
     estaVazio,
@@ -168,6 +214,10 @@ module.exports = {
     sexoProfessor,
     calcularTabuada,
     entradaTabuada,
-    valorTabuada
+    valorTabuada,
+    validarFatorial,
+    fatorial,
+
+
 
 }
