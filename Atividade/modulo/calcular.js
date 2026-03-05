@@ -230,28 +230,35 @@ const parEImpar = function(valorInicial, valorFinal){
     let final   = Number(valorFinal)
 
     let impar = inicio
-
-    if(impar % 2 === 0){
-        impar++
-    }
-
-    while (impar <= final){
-        console.log(impar)
-        impar+=2
-    }
-
-
     let par = inicio
+    let escolha
 
-    if(par % 2 !== 0){
-        par++
+
+    if(escolha === 'Ímpar'){
+
+        if(impar % 2 === 0){
+            impar++
+        }
+
+        console.log('\nLista de números Ímpares')
+
+        while (impar <= final){
+            console.log(impar)
+            impar+=2
+        }
+
+    }else if(escolha === 'Par'){
+
+        if(par % 2 !== 0){
+            par++
+        }
+        console.log('\nLista de números Pares')
+
+        while (par <= final){
+            console.log(par)
+            par+=2
+        }
     }
-
-    while (par <= final){
-        console.log(par)
-        par+=2
-    }
-
 }
 
 
