@@ -1,3 +1,5 @@
+const { log } = require("node:console")
+
 /******************************************************************************************************************************
  * Funções para exercícios
  * Data: 27/02/2026
@@ -212,7 +214,7 @@ const validarNumeros = function(valor1, valor2){
         Number.isNaN(n1) || Number.isNaN(n2) ||
         !Number.isInteger(n1) || !Number(n2) ||
         n1 < 0 || n1 > 500 ||
-        n2 < 100 || n2 > 1000
+        n2 < 100 || n2 > 1000 || n1 > n2 || n1 === n2
     ) {
         return false
 
@@ -221,6 +223,36 @@ const validarNumeros = function(valor1, valor2){
     return true
 }
 
+
+const parEImpar = function(valorInicial, valorFinal){
+
+    let inicio  = Number(valorInicial)
+    let final   = Number(valorFinal)
+
+    let impar = inicio
+
+    if(impar % 2 === 0){
+        impar++
+    }
+
+    while (impar <= final){
+        console.log(impar)
+        impar+=2
+    }
+
+
+    let par = inicio
+
+    if(par % 2 !== 0){
+        par++
+    }
+
+    while (par <= final){
+        console.log(par)
+        par+=2
+    }
+
+}
 
 
 
@@ -242,4 +274,5 @@ module.exports = {
     validarFatorial,
     fatorial,
     validarNumeros,
+    parEImpar
 }

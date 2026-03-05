@@ -31,6 +31,21 @@ entradaDeDados.question('Digite o numero inicial: ', function(numero1){
             entradaDeDados.close()
             return
         }
-        
+
+
+        entradaDeDados.question('Digite se deseja ver a lista de Pares ou Ímpares: (1 = Par) - (2 = Ímpar) - (3 = Ambos): ', function(lista){
+
+            if(funcoesParImpar.estaVazio(lista)){
+                console.log('Erro: Este campo não pode estar vazio')
+                entradaDeDados.close()
+                return
+            }
+
+            let paresEImpares = funcoesParImpar.parEImpar(
+                Number(numero1),
+                Number(numero2)
+            )
+
+        })  
     })
 })
