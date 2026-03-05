@@ -25,7 +25,7 @@
 
 */
 
-//Import da biblioteca
+//import Da Biblioteca
 const console = require('console')
 const readline = require('readline')
 
