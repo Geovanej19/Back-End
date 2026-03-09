@@ -15,6 +15,7 @@ const entradaDeDados = readline.createInterface({
     output: process.stdout
 })
 
+//Entrada do primeiro número
 entradaDeDados.question('\nDigite o numero inicial: ', function(numero1){
 
     if(funcoesParImpar.estaVazio(numero1)){
@@ -24,6 +25,7 @@ entradaDeDados.question('\nDigite o numero inicial: ', function(numero1){
     }
 
 
+    //Entrada do segunda número
     entradaDeDados.question('\nDigite o número final: ', function(numero2){
 
         if(funcoesParImpar.estaVazio(numero2)){
@@ -33,6 +35,7 @@ entradaDeDados.question('\nDigite o numero inicial: ', function(numero1){
         }
 
 
+        //Entrada das opções que usuário quer
         entradaDeDados.question('\nDigite se deseja ver a lista de Pares ou Ímpares: (1 = Ímpar) - (2 = Par) - (3 = Ambos): ', function(lista){
 
             if(funcoesParImpar.estaVazio(lista)){
@@ -41,6 +44,7 @@ entradaDeDados.question('\nDigite o numero inicial: ', function(numero1){
                 return
             }
 
+            //Função que chama para calcular pares e ímpares
             let paresEImpares = funcoesParImpar.parEImpar(
                 Number(numero1),
                 Number(numero2),
