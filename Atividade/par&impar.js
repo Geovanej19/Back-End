@@ -43,7 +43,8 @@ entradaDeDados.question('\nDigite o numero inicial: ', function(numero1){
 
             let paresEImpares = funcoesParImpar.parEImpar(
                 Number(numero1),
-                Number(numero2)
+                Number(numero2),
+                Number(lista)
             )
 
             entradaDeDados.close()
