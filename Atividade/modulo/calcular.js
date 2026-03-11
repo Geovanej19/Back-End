@@ -224,17 +224,15 @@ const validarNumeros = function(valor1, valor2){
 }
 
 
-const parEImpar = function(valorInicial, valorFinal){
+const parEImpar = function(valorInicial, valorFinal, tipo){
 
-    let inicio  = Number(valorInicial)
-    let final   = Number(valorFinal)
+    let inicio = valorInicial
+    let final  = valorFinal
 
     let impar = inicio
     let par = inicio
-    let escolha
 
-
-    if(escolha === 'Ímpar'){
+    if(tipo == 1 || tipo == 3){
 
         if(impar % 2 === 0){
             impar++
@@ -242,26 +240,26 @@ const parEImpar = function(valorInicial, valorFinal){
 
         console.log('\nLista de números Ímpares')
 
-        while (impar <= final){
+        while(impar <= final){
             console.log(impar)
-            impar+=2
+            impar += 2
         }
+    }
 
-    }else if(escolha === 'Par'){
+    if(tipo == 2 || tipo == 3){
 
         if(par % 2 !== 0){
             par++
         }
+
         console.log('\nLista de números Pares')
 
-        while (par <= final){
+        while(par <= final){
             console.log(par)
-            par+=2
+            par += 2
         }
     }
 }
-
-
 
 
 
