@@ -53,4 +53,3 @@ entradaDeDados.question('Favor digitar seu nome: ', function(nomeUsuario){
     })
 
 })
-

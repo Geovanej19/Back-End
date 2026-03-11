@@ -32,7 +32,18 @@
 */
 
 //Formas de Criar um Array
-const listaDeNomes      = ['José', 'Maria', 'João', 'André', 'Alex']
+const listaDeNomes      = [ 'José', 
+                            'Maria', 
+                            'João', 
+                            'André', 
+                            'Alex', 
+                            'Carlos',
+                            'Ana', 
+                            'Bruna',
+                            'Jake',
+                            'José',
+                            'Jose da Silva']
+
 const listDeClientes    = []
 const listaDeFornecedores = []
 
@@ -117,10 +128,83 @@ const manipularDados = function(){
     listaDeFornecedores.push('Huguinho da Silva')
     listaDeFornecedores.push('Luizinho da Silva', 'Ande da Silva', 'Carlos da Silva')
 
-    console.log(listeDeFornecedores)
+
+
+    //Permite adicionar novos elementos no array sempre no Inicio da lista
+    listaDeFornecedores.unshift('Ana Carolina')
+    console.table(listaDeFornecedores)
+
+
+
+    //Permite remover elementos do Final da lista(array)
+    listaDeFornecedores.pop()
+    console.table(listaDeFornecedores)
+
+
+    //Permite remover elementos do inicio da lista
+    listaDeFornecedores.shift()
+    console.table(listaDeFornecedores)
+
+
+    //Permite remover um elemento baseado no indice da lista
+                        //Splice(indice, quantidade de elementos)
+    listaDeFornecedores.splice(2, 1)
+    console.table(listaDeFornecedores)
+}
+
+const removerItem = function(nome){
+
+    //Retrona o indice de um elemente fazendo a busca pelo valor
+    //Se o index não encontrar o coteúdo ele devolve -1
+    let indice = listaDeNomes.indexOf(nome)
+    listaDeNomes.splice(indice,1)
+    if(indice != -1){
+        listaDeNomes.splice(indice, 1)
+        return true
+
+    }else {
+        return false
+    }
+
+
+    //for(indice in listaDeNomes ){
+    //    if(listaDeNomes[indice] == nome){
+    //       listaDeNomes.splice(indice,3)
+    //    }
+    //}
+
+}
+
+const verificarItem = function(nome){
+
+    //Verifica a existência de um conteúdo dentro de uma lista(true/false)
+    return listaDeNomes.includes(nome)
+ 
+}
+
+const quantidadeDeItens = function(nome){
+    let cont = 0
+    listaDeNomes.forEach(function(item){
+        if(String(item).toUpperCase() == String(nome).toUpperCase())
+            cont +=1
+
+    })
+    return cont
 }
 
 
-//exibirDados()
-manipularDados()
 
+// exibirDados()
+// manipularDados()
+// let resposta = removerItem('Jheniffer')
+// if(resposta){
+//     console.log('Item removido com sucesso.')
+
+// }else {
+//     console.log('Não foram encontrados itens para ser removido.')
+// }
+// console.table(listaDeNomes)
+
+//console.log(verificarItem('Jheniffer'))
+
+console.log(quantidadeDeItens('josé'))
