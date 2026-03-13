@@ -146,10 +146,18 @@ const manipularDados = function(){
     console.table(listaDeFornecedores)
 
 
-    //Permite remover um elemento baseado no indice da lista
+    //Splice() -> //Permite remover um elemento baseado no indice da lista
                         //Splice(indice, quantidade de elementos)
     listaDeFornecedores.splice(2, 1)
     console.table(listaDeFornecedores)
+
+
+    //Splice() -> Permite adicionar um novo elemento em um detreminado lugar do array (indice)
+                          //Indice, 0 -> Significa que não será removido ninguem, novo conteúdo
+    listaDeFornecedores.splice(2,0, 'Carlos da Silva')
+    console.table(listaDeFornecedores)
+
+    listaDeFornecedores[1] = 'zezinho de souza'
 }
 
 const removerItem = function(nome){
@@ -192,6 +200,128 @@ const quantidadeDeItens = function(nome){
     return cont
 }
 
+const criandoDadosJSON = function(){
+    let aluno = {   "nome": "José", 
+                    "ra": 123456, 
+                    "telefone": "9756235412", 
+                    "email": "jose@gmial.com" 
+                }
+
+    //Exibindo o Objeto JSON completo
+    console.log(aluno)
+
+
+    //Exibindo apenas um atributo do JSON
+    console.log(aluno.nome)
+    console.log(aluno.email)
+
+
+    //Adicionar um novo atributo no JSON
+    aluno.sexo = 'Masculino'
+    aluno.idade = '20'
+    console.log(aluno)
+
+
+    //Remove um atributo do JSON
+    delete aluno.telefone
+    delete aluno.idade
+    console.log(aluno)
+
+}
+
+const cadastroDeProdutos = function(){
+    let cores = [
+        {"id": 1, "cor": "Branco"}, //indice 0
+        {"id": 2, "cor": "Preto"},  //indice 1
+        {"id": 3, "cor": "Azul"},   //indice 2
+        {"id": 4, "cor": "Rosa"},   //indice 3
+        {"id": 5, "cor": "Cinza"}   //indice 4
+    ]
+
+    let marcas = [
+        {"id": 1, "marca": "LG",          "telefone": "123456789", "email": "lg@lg.com.br"},
+        {"id": 2, "marca": "Dell",        "telefone": "922351615", "email": "dell@dell.com.br"},
+        {"id": 3, "marca": "Lenovo",      "telefone": "231554623", "email": "lenovo@lenovo.com.br"},
+        {"id": 4, "marca": "Apple",       "telefone": "566132654", "email": "apple@apple.com.br"},
+        {"id": 5, "marca": "Rayzer",      "telefone": "754651668", "email": "rayzer@rayzer.com.br"},
+        {"id": 6, "marca": "Logitech",    "telefone": "651316651", "email": "logitech@logitech.com.br"},
+        {"id": 7, "marca": "Multilaser",  "telefone": "126516546", "email": "multilaser@multi.com.br"},
+    ]
+
+    let produtos = [
+        {
+            "id": 1, 
+            "nome": "monitor", 
+            "descricao": "27 polegadas",
+            "marca": [
+                marcas[1].marca
+            ],
+            "qtde":20,
+            "cor": [
+                cores[4].cor,
+                cores[1].cor
+            ],
+            "valor": 800.50
+        
+        },
+        {
+            "id": 2,
+            "nome": "teclado",
+            "descricao": "teclado mecânico RGB",
+            "marca": [
+                marcas[5].marca
+            ],
+            "qtde": 200,
+            "cor": cores,
+            "valor": 150
+        },
+        {
+            "id": 3,
+            "nome": "Mouse",
+            "descricao": "Mouse sem fio",
+            "marca": [
+                marcas[0].marca,
+                marcas[1].marca,
+                marcas[5].marca
+            ],
+            "qtde": 500,
+            "cor": [
+                cores[0].cor,
+                cores[1].cor,
+                cores[4].cor
+            ],
+            "valor": 80
+        }
+
+
+
+
+    ]
+
+
+
+    // console.log(cores)
+    // console.table(cores)
+
+    // console.log(cores[1].nome)
+    // console.log(produtos)
+    // console.log(produtos[0].cor)
+    // console.log(produtos[0].cor[1].cor)
+
+    console.table(produtos)
+
+    produtos.forEach(function(produto){
+        console.log(`Nome dos produtos: ${produto.nome}`)
+
+    })
+
+
+
+
+
+
+}
+
 
 
 // exibirDados()
@@ -207,4 +337,10 @@ const quantidadeDeItens = function(nome){
 
 //console.log(verificarItem('Jheniffer'))
 
-console.log(quantidadeDeItens('josé'))
+//console.table(listaDeNomes())
+
+//criandoDadosJSON()
+
+//cadastroDeProdutos()
+
+cadastroDeProdutos()
