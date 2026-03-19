@@ -315,12 +315,38 @@ const cadastroDeProdutos = function(){
 
     })
 
+      //Percorre o objeto de marca dentro de cada produto para trazer as marcas
+      itemProduto.marca.forEach(function(marca){
+        console.log(`           Marca: ${marca}`)
+        })
 
+        //Percorre o objeto de cor dentro de cada produto, para trazer as cores
+        itemProduto.cor.forEach(function(cor){
+        console.log(`                   Cor: ${cor.nomecor}`)
 
+        })
 
+            //Pesquisanod pela cor
+    console.log("Pesquisando produto pela cor.......")
 
+    let corBusca = "Branco"
+    let status = false
+
+    produtos.forEach(function(itemProduto){
+    itemProduto.cor.forEach(function(itemCor){
+        if (itemCor.nomecor.toUpperCase() === corBusca.toUpperCase()) {
+            console.log(itemProduto)
+            status = true
+        }
+        })
+    })
+
+    if(!status)
+        console.log('Item pesquisado não foi encontrado.......')
 
 }
+
+
 
 
 
@@ -342,5 +368,6 @@ const cadastroDeProdutos = function(){
 //criandoDadosJSON()
 
 //cadastroDeProdutos()
+// atividades
 
 cadastroDeProdutos()
