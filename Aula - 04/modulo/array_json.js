@@ -370,4 +370,6 @@ const cadastroDeProdutos = function(){
 //cadastroDeProdutos()
 // atividades
 
-cadastroDeProdutos()
+//cadastroDeProdutos()
+
+console.log(quantidadeDeItens())

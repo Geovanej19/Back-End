@@ -22503,5 +22503,5 @@ var listaDeEstados = {
 }
 
 module.exports = {
-    listaDeEstados
+   listaDeEstados
 }
