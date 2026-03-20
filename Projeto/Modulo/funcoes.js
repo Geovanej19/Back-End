@@ -107,7 +107,8 @@ const getCapitalPais = function(){
 
 const getCidades = function(uf){
     let estado = listaDeEstados.listaDeEstados.estados.find(function(estado){
-        return estado.sigla.toLocaleLowerCase == uf.toLocaleUpperCase
+        return estado.sigla.toLowerCase() == uf.toLowerCase() ||
+               estado.nome.toLowerCase() == uf.toLowerCase()
     })
 
     if(estado == undefined){
@@ -119,7 +120,6 @@ const getCidades = function(uf){
         descricao: estado.nome,
         quantidade_cidades: estado.cidades.length,
         cidades: estado.cidades.map(function(cidade){
-
             return {
                 nome: cidade.nome,
                 id: cidade.id
@@ -128,4 +128,4 @@ const getCidades = function(uf){
     }
 }
 
-console.log(getCidades('AC'))
+console.log(getCidades('SP'))
