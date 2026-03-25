@@ -128,4 +128,13 @@ const getCidades = function(uf){
     }
 }
 
-console.log(getCidades('ES'));
+
+module.exports = {
+
+    getListaDeEstados,
+    getDadosEstado,
+    getCidades,
+    getCapitalEstado,
+    getCapitalPais,
+    getEstadosRegiao
+}

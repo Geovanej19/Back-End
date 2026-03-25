@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EstadosBR — API de Estados</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-900: #050f2c;
+    --blue-800: #0a1f5c;
+    --blue-700: #0e2d8a;
+    --blue-600: #1440c4;
+    --blue-400: #3b6ef5;
+    --blue-300: #6b96ff;
+    --blue-100: #dbe8ff;
+    --accent: #00d4ff;
+    --accent2: #ffd166;
+    --white: #f4f8ff;
+    --gray: #8898bb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--blue-900);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,110,245,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,110,245,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow blobs */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-1 { width: 600px; height: 600px; background: var(--blue-400); top: -200px; left: -100px; }
+  .blob-2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; right: -50px; }
+
+  /* Header */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(59,110,245,0.15);
+    backdrop-filter: blur(8px);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo span {
+    color: var(--accent);
+  }
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.5; transform:scale(1.4); }
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 72px 48px 48px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero p {
+    color: var(--gray);
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  /* Tabs */
+  .tabs {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 48px 40px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: 1px solid rgba(59,110,245,0.25);
+    background: rgba(10,31,92,0.4);
+    color: var(--gray);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(6px);
+  }
+  .tab:hover { border-color: var(--blue-300); color: var(--white); }
+  .tab.active {
+    background: var(--blue-600);
+    border-color: var(--blue-400);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  /* Main content */
+  .container {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+  }
+
+  /* Card */
+  .card {
+    background: rgba(10,31,92,0.35);
+    border: 1px solid rgba(59,110,245,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    backdrop-filter: blur(10px);
+    margin-bottom: 24px;
+  }
+  .card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--blue-100);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h2::before {
+    content: '';
+    display: block;
+    width: 4px; height: 18px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* Search row */
+  .input-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .input-row input, .input-row select {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(59,110,245,0.3);
+    background: rgba(5,15,44,0.6);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-row input:focus, .input-row select:focus {
+    border-color: var(--accent);
+  }
+  .input-row select option { background: var(--blue-800); }
+
+  .btn {
+    padding: 14px 28px;
+    border-radius: 10px;
+    border: none;
+    background: var(--blue-600);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--blue-400); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  /* Result */
+  .result {
+    margin-top: 24px;
+    display: none;
+  }
+  .result.show { display: block; animation: fadeUp 0.3s ease; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(12px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .result-item {
+    background: rgba(5,15,44,0.6);
+    border: 1px solid rgba(59,110,245,0.2);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .result-item .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray);
+    margin-bottom: 6px;
+  }
+  .result-item .value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .result-item .value.accent { color: var(--accent); }
+
+  /* Tags (siglas) */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .tag {
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: rgba(20,64,196,0.3);
+    border: 1px solid rgba(59,110,245,0.25);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--blue-100);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tag:hover {
+    background: var(--blue-600);
+    border-color: var(--blue-400);
+    color: #fff;
+  }
+
+  /* Cities list */
+  .cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .cities-grid::-webkit-scrollbar { width: 4px; }
+  .cities-grid::-webkit-scrollbar-track { background: transparent; }
+  .cities-grid::-webkit-scrollbar-thumb { background: var(--blue-600); border-radius: 2px; }
+
+  .city-item {
+    padding: 10px 14px;
+    background: rgba(5,15,44,0.5);
+    border: 1px solid rgba(59,110,245,0.15);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: var(--blue-100);
+    transition: border-color 0.15s;
+  }
+  .city-item:hover { border-color: rgba(59,110,245,0.4); }
+  .city-item .city-id { color: var(--gray); font-size: 0.72rem; }
+
+  /* Error */
+  .error-msg {
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: rgba(255,50,50,0.1);
+    border: 1px solid rgba(255,50,50,0.3);
+    color: #ff8080;
+    font-size: 0.9rem;
+  }
+
+  /* Loading */
+  .loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gray);
+    font-size: 0.9rem;
+    padding: 16px 0;
+  }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(59,110,245,0.3);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* Regions */
+  .region-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .region-btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(59,110,245,0.25);
+    background: rgba(10,31,92,0.4);
+    color: var(--gray);
+    cursor: pointer;
+    font-size: 0.88rem;
+    transition: all 0.2s;
+  }
+  .region-btn:hover, .region-btn.active {
+    background: var(--blue-700);
+    border-color: var(--blue-400);
+    color: #fff;
+  }
+
+  /* Section panels */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Footer */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 24px;
+    border-top: 1px solid rgba(59,110,245,0.1);
+    color: var(--gray);
+    font-size: 0.8rem;
+  }
+  footer strong { color: var(--blue-300); }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Estados<span>BR</span>
+  </div>
+  <div class="badge">API v1.0</div>
+</header>
+
+<div class="hero">
+  <h1>Explore os <em>Estados</em><br>do Brasil</h1>
+  <p>Consulte dados completos sobre estados, capitais, regiões e cidades diretamente da sua API.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('estados')">📋 Todos os Estados</button>
+  <button class="tab" onclick="switchTab('estado')">🔍 Buscar Estado</button>
+  <button class="tab" onclick="switchTab('cidades')">🏙️ Cidades</button>
+  <button class="tab" onclick="switchTab('regiao')">🗺️ Por Região</button>
+  <button class="tab" onclick="switchTab('capital')">⭐ Capital do País</button>
+</div>
+
+<div class="container">
+
+  <!-- Todos os Estados -->
+  <div class="panel active" id="panel-estados">
+    <div class="card">
+      <h2>Lista de Estados</h2>
+      <button class="btn" onclick="loadEstados()">Carregar todos os estados</button>
+      <div class="result" id="result-estados"></div>
+    </div>
+  </div>
+
+  <!-- Buscar Estado -->
+  <div class="panel" id="panel-estado">
+    <div class="card">
+      <h2>Buscar por Sigla</h2>
+      <div class="input-row">
+        <input id="input-uf" type="text" placeholder="Ex: SP, RJ, MG..." maxlength="2" oninput="this.value=this.value.toUpperCase()">
+        <button class="btn" onclick="loadEstado()">Buscar</button>
+      </div>
+      <div class="result" id="result-estado"></div>
+    </div>
+  </div>
+
+  <!-- Cidades -->
+  <div class="panel" id="panel-cidades">
+    <div class="card">
+      <h2>Cidades por Estado</h2>
+      <div class="input-row">
+        <input id="input-uf-cidades" type="text" placeholder="Ex: AC, SP, BA..." maxlength="2" oninput="this.value=this.value.toUpperCase()">
+        <button class="btn" onclick="loadCidades()">Buscar</button>
+      </div>
+      <div class="result" id="result-cidades"></div>
+    </div>
+  </div>
+
+  <!-- Região -->
+  <div class="panel" id="panel-regiao">
+    <div class="card">
+      <h2>Estados por Região</h2>
+      <div class="region-btns">
+        <button class="region-btn" onclick="loadRegiao('Norte', this)">Norte</button>
+        <button class="region-btn" onclick="loadRegiao('Nordeste', this)">Nordeste</button>
+        <button class="region-btn" onclick="loadRegiao('Centro-Oeste', this)">Centro-Oeste</button>
+        <button class="region-btn" onclick="loadRegiao('Sudeste', this)">Sudeste</button>
+        <button class="region-btn" onclick="loadRegiao('Sul', this)">Sul</button>
+      </div>
+      <div class="result" id="result-regiao"></div>
+    </div>
+  </div>
+
+  <!-- Capital do País -->
+  <div class="panel" id="panel-capital">
+    <div class="card">
+      <h2>Histórico de Capitais</h2>
+      <button class="btn" onclick="loadCapital()">Ver histórico de capitais</button>
+      <div class="result" id="result-capital"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Desenvolvido por <strong>Geovane</strong> · EstadosBR API v1.0 · 2026
+</footer>
+
+<script>
+  const API = 'http://localhost:3000';
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach((t,i) => {
+      t.classList.toggle('active', ['estados','estado','cidades','regiao','capital'][i] === name);
+    });
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+  }
+
+  function showLoading(id) {
+    const el = document.getElementById(id);
+    el.classList.add('show');
+    el.innerHTML = `<div class="loading"><div class="spinner"></div>Consultando API...</div>`;
+  }
+
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    el.classList.add('show');
+    el.innerHTML = `<div class="error-msg">⚠️ ${msg}</div>`;
+  }
+
+  async function loadEstados() {
+    showLoading('result-estados');
+    try {
+      const res = await fetch(`${API}/estados`);
+      const data = await res.json();
+      const el = document.getElementById('result-estados');
+      el.innerHTML = `
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="label">Total de Estados</div>
+            <div class="value accent">${data.quantidade}</div>
+          </div>
+        </div>
+        <div class="tags">
+          ${data.uf.map(uf => `<span class="tag" onclick="buscarEstado('${uf}')">${uf}</span>`).join('')}
+        </div>
+      `;
+    } catch(e) {
+      showError('result-estados', 'Não foi possível conectar à API. Verifique se o servidor está rodando.');
+    }
+  }
+
+  function buscarEstado(uf) {
+    switchTab('estado');
+    document.getElementById('input-uf').value = uf;
+    loadEstado();
+  }
+
+  async function loadEstado() {
+    const uf = document.getElementById('input-uf').value.trim();
+    if (!uf) return;
+    showLoading('result-estado');
+    try {
+      const res = await fetch(`${API}/estados/${uf}`);
+      if (!res.ok) { showError('result-estado', `Estado "${uf}" não encontrado.`); return; }
+      const d = await res.json();
+      document.getElementById('result-estado').innerHTML = `
+        <div class="result-grid">
+          <div class="result-item"><div class="label">Sigla</div><div class="value accent">${d.uf}</div></div>
+          <div class="result-item"><div class="label">Estado</div><div class="value">${d.descricao}</div></div>
+          <div class="result-item"><div class="label">Capital</div><div class="value">${d.capital}</div></div>
+          <div class="result-item"><div class="label">Região</div><div class="value">${d.regiao}</div></div>
+        </div>
+        <button class="btn" style="margin-top:4px" onclick="document.getElementById('input-uf-cidades').value='${d.uf}'; switchTab('cidades'); loadCidades()">Ver cidades →</button>
+      `;
+    } catch(e) {
+      showError('result-estado', 'Erro ao conectar à API.');
+    }
+  }
+
+  async function loadCidades() {
+    const uf = document.getElementById('input-uf-cidades').value.trim();
+    if (!uf) return;
+    showLoading('result-cidades');
+    try {
+      const res = await fetch(`${API}/estados/${uf}/cidades`);
+      if (!res.ok) { showError('result-cidades', `Estado "${uf}" não encontrado.`); return; }
+      const d = await res.json();
+      document.getElementById('result-cidades').innerHTML = `
+        <div class="result-grid" style="margin-bottom:16px">
+          <div class="result-item"><div class="label">Estado</div><div class="value">${d.descricao}</div></div>
+          <div class="result-item"><div class="label">Sigla</div><div class="value accent">${d.uf}</div></div>
+          <div class="result-item"><div class="label">Qtd. Cidades</div><div class="value accent">${d.quantidade_cidades}</div></div>
+        </div>
+        <div class="cities-grid">
+          ${d.cidades.map(c => `<div class="city-item">${c.nome}<div class="city-id">ID: ${c.id}</div></div>`).join('')}
+        </div>
+      `;
+    } catch(e) {
+      showError('result-cidades', 'Erro ao conectar à API.');
+    }
+  }
+
+  async function loadRegiao(regiao, btn) {
+    document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    showLoading('result-regiao');
+    try {
+      const res = await fetch(`${API}/estados/regiao/${regiao}`);
+      if (!res.ok) { showError('result-regiao', `Região "${regiao}" não encontrada.`); return; }
+      const d = await res.json();
+      document.getElementById('result-regiao').innerHTML = `
+        <div class="result-item" style="margin-bottom:16px;display:inline-block">
+          <div class="label">Região</div>
+          <div class="value accent">${d.regiao} · ${d.estados.length} estados</div>
+        </div>
+        <div class="tags">
+          ${d.estados.map(e => `<span class="tag" onclick="buscarEstado('${e.uf}')">${e.uf} — ${e.descricao}</span>`).join('')}
+        </div>
+      `;
+    } catch(e) {
+      showError('result-regiao', 'Erro ao conectar à API. Verifique se a rota /estados/regiao/:regiao existe.');
+    }
+  }
+
+  async function loadCapital() {
+    showLoading('result-capital');
+    try {
+      const res = await fetch(`${API}/estados/capital-pais`);
+      if (!res.ok) { showError('result-capital', 'Rota não encontrada.'); return; }
+      const d = await res.json();
+      document.getElementById('result-capital').innerHTML = `
+        <div class="result-grid">
+          ${d.capitais.map(c => `
+            <div class="result-item">
+              <div class="label">${c.capital_pais_ano_inicio} – ${c.capital_pais_ano_termino || 'atual'}</div>
+              <div class="value">${c.capital}</div>
+              <div style="color:var(--gray);font-size:0.78rem;margin-top:4px">${c.descricao} (${c.uf})</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } catch(e) {
+      showError('result-capital', 'Erro ao conectar à API. Verifique se a rota /estados/capital-pais existe.');
+    }
+  }
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const activePanel = document.querySelector('.panel.active');
+      if (activePanel.id === 'panel-estado') loadEstado();
+      if (activePanel.id === 'panel-cidades') loadCidades();
+    }
+  });
+</script>
+</body>
+</html>
