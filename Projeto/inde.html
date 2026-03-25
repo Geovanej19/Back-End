@@ -483,7 +483,7 @@
 </footer>
 
 <script>
-  const API = 'http://localhost:3000';
+  const API = window.location.origin
 
   function switchTab(name) {
     document.querySelectorAll('.tab').forEach((t,i) => {
@@ -633,3 +633,4 @@
 </script>
 </body>
 </html>
+

@@ -1,14 +1,23 @@
 const express = require('express')
 const router = express.Router()
-const { getListaDeEstados, getDadosEstado, getCidades, getEstadosRegiao, getCapitalPais } = require('../Modulo/funcoes.js')
 
-// GET /estados
+const {
+    getListaDeEstados,
+    getDadosEstado,
+    getCidades,
+    getEstadosRegiao,
+    getCapitalPais
+} = require('../Modulo/funcoes.js')
+
+
+// ✅ GET /estados
 router.get('/', (req, res) => {
     const resultado = getListaDeEstados()
-    res.json(resultado)
+    return res.status(200).json(resultado)
 })
 
-// GET /estados/capital-pais  ← deve vir ANTES de /:uf
+
+// ✅ GET /estados/capital-pais
 router.get('/capital-pais', (req, res) => {
     const resultado = getCapitalPais()
 
@@ -16,40 +25,53 @@ router.get('/capital-pais', (req, res) => {
         return res.status(404).json({ erro: 'Nenhuma capital encontrada' })
     }
 
-    res.json(resultado)
+    return res.status(200).json(resultado)
 })
 
-// GET /estados/regiao/:regiao  ← deve vir ANTES de /:uf
+
+// ✅ GET /estados/regiao/:regiao
 router.get('/regiao/:regiao', (req, res) => {
-    const resultado = getEstadosRegiao(req.params.regiao)
+    const regiao = req.params.regiao
+
+    const resultado = getEstadosRegiao(regiao)
 
     if (!resultado) {
         return res.status(404).json({ erro: 'Região não encontrada' })
     }
 
-    res.json(resultado)
+    return res.status(200).json(resultado)
 })
 
-// GET /estados/:uf
-router.get('/:uf', (req, res) => {
-    const resultado = getDadosEstado(req.params.uf)
 
-    if (!resultado) {
-        return res.status(404).json({ erro: 'Estado não encontrado' })
-    }
+// ⚠️ ROTAS DINÂMICAS (SEMPRE POR ÚLTIMO)
 
-    res.json(resultado)
-})
 
-// GET /estados/:uf/cidades
+// ✅ GET /estados/:uf/cidades
 router.get('/:uf/cidades', (req, res) => {
-    const resultado = getCidades(req.params.uf)
+    const uf = req.params.uf
+
+    const resultado = getCidades(uf)
 
     if (!resultado) {
         return res.status(404).json({ erro: 'Estado não encontrado' })
     }
 
-    res.json(resultado)
+    return res.status(200).json(resultado)
 })
+
+
+// ✅ GET /estados/:uf
+router.get('/:uf', (req, res) => {
+    const uf = req.params.uf
+
+    const resultado = getDadosEstado(uf)
+
+    if (!resultado) {
+        return res.status(404).json({ erro: 'Estado não encontrado' })
+    }
+
+    return res.status(200).json(resultado)
+})
+
 
 module.exports = router
