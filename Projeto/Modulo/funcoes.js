@@ -128,8 +128,4 @@ const getCidades = function(uf){
     }
 }
 
-<<<<<<< HEAD
-console.log(getCidades('SP'))
-=======
-console.log(getCidades('RJ'))
->>>>>>> 73637ae (Projeto Finalizado)
+console.log(getCidades('ES'));
