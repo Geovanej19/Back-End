@@ -26,23 +26,22 @@ const getListaDeEstados = function(){
 const getDadosEstado = function(siglas){
 
     let estado = listaDeEstados.listaDeEstados.estados.find(function(estado){
-        return estado.sigla.toUpperCase() === siglas.toUpperCase()
+        return estado.sigla === siglas
     })
 
     if(!estado){
         return false
+    }else{
+
+        return {
+            uf: estado.sigla,
+            descricao: estado.nome,
+            capital: estado.capital,
+            regiao: estado.regiao
+        }
     }
 
-    return {
-        uf: estado.sigla,
-        descricao: estado.nome,
-        capital: estado.capital,
-        regiao: estado.regiao
-    }
 }
-
-
-
 
 const getCapitalEstado = function(uf){
     let estado = listaDeEstados.listaDeEstados.estados.find(function(estado){
@@ -108,7 +107,8 @@ const getCapitalPais = function(){
 
 const getCidades = function(uf){
     let estado = listaDeEstados.listaDeEstados.estados.find(function(estado){
-        return estado.sigla.toLowerCase() == uf.toLowerCase()
+        return estado.sigla.toLowerCase() == uf.toLowerCase() ||
+               estado.nome.toLowerCase() == uf.toLowerCase()
     })
 
     if(estado == undefined){
@@ -127,7 +127,6 @@ const getCidades = function(uf){
         })
     }
 }
-
 
 
 module.exports = {
