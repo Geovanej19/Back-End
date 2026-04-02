@@ -12,22 +12,21 @@ const listaDeEstados = require('./estados_cidades.js')
 
 const getListaDeEstados = function(){
 
-    let siglas = listaDeEstados.listaDeEstados.estados.map(function(estado){
-        return estado.sigla
-
-    })
+    const siglas = listaDeEstados.listaDeEstados.estados.map(
+        estado => estado.sigla
+    )
 
     return {
-        uf: siglas,
+        siglas,
         quantidade: siglas.length
     }
 }
 
-const getDadosEstado = function(siglas){
+const getDadosEstado = function(uf){
 
-    let estado = listaDeEstados.listaDeEstados.estados.find(function(estado){
-        return estado.sigla.toUpperCase() === siglas.toUpperCase()
-    })
+    const estado = listaDeEstados.listaDeEstados.estados.find(
+        estado => estado.sigla.toLowerCase() === uf.toLowerCase()
+    )
 
     if(!estado){
         return false
@@ -40,9 +39,6 @@ const getDadosEstado = function(siglas){
         regiao: estado.regiao
     }
 }
-
-
-
 
 const getCapitalEstado = function(uf){
     let estado = listaDeEstados.listaDeEstados.estados.find(function(estado){
