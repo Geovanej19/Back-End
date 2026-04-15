@@ -160,3 +160,10 @@ app.get('/v1/senai/help', function(request, response){
     response.status(200)
     response.json(docAPI)
 })
+
+//ativação do servidor
+const PORT = process.env.PORT || 8080
+
+app.listen(PORT, function(){
+    console.log(`Servidor rodando na porta ${PORT}`)
+})
