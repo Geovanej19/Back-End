@@ -17,35 +17,43 @@ const knexConfig = require('../../database_config_knex/knexFile.js')
 //Criar a conexão com o banco de dados MySQL
 const knexConex = knex(knexConfig.development)
 
-
 //Função para inserir dados na tabela de filmes
 const insertFilme = async function(filme) {
-    let sql = `insert into tbl_filme (
-                    nome, 
-                    data_lancamento, 
-                    duracao, 
-                    sinopse, 
-                    avaliacao, 
-                    valor, 
-                    capa
-                    )
-	        values(
-                    '${filme.nome}', 
-		            '${filme.data_lancamento}', 
-                    '${filme.duracao}',
-                    '${filme.sinopse}',
-                    '${filme.avaliacao}',
-                    '${filme.valor}',
-                    '${filme.capa}');`
 
-    //Executar o ScriptSQL no Banco de Dados
-    let result = await knexConex.raw(sql)
-
-    if(result)
-        return true
-    else
-        return false
+    try {
+        
     
+        let sql = `insert into tbl_filme (
+                        nome, 
+                        data_lancamento, 
+                        duracao, 
+                        sinopse, 
+                        avaliacao, 
+                        valor, 
+                        capa
+                        )
+                values(
+                        '${filme.nome}', 
+                        '${filme.data_lancamento}', 
+                        '${filme.duracao}',
+                        '${filme.sinopse}',
+                        if('${filme.avaliacao}' = '', null, '${filme.avaliacao}'), 
+                        '${filme.valor}',
+                        '${filme.capa}');`
+
+        //Executar o ScriptSQL no Banco de Dados
+        let result = await knexConex.raw(sql)
+
+        if(result)
+            return true
+        else
+            return false
+    
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }
     
 }
 
