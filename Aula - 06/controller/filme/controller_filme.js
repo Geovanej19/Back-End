@@ -21,7 +21,7 @@ const inserirNovoFilme = async function (filme, contentType){
 
     if(String(contentType).includes('application/json')){
 
-        //Cria 
+        //Criando clone do objeto JSOn paea manipular a sua estrutura local sem modificar a estrutura original
         let message = JSON.parse(JSON.stringify(message_config))
 
         //Validação de dados para os atributos do Filme (Status 400)
@@ -61,11 +61,68 @@ const atualizarFilme = async function (){
 //Função para retornar todos os filmes
 const listarFilme = async function (){
 
+    let message = JSON.parse(JSON.stringify(message_config))
+
+    try {
+        //Chama a função do DAO para retornar a lista de todos os filmes
+        let result = await filmeDAO.selectAllFilme()
+
+        //Validação para verificar se o DAO conseguiu processar os dados
+        if(result){
+            //Validação para verificr se existe conteúdo no Array
+            if(result.length > 0){
+                message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE .status
+                message.DEFAULT_MESSAGE.status_code = message.SUCESS_RESPONSE.status_code
+                message.DEFAULT_MESSAGE.response.count = result.length
+                message.DEFAULT_MESSAGE.response.filme = result
+
+                return message.DEFAULT_MESSAGE //200 (Dados do Filme)
+
+            }else {
+                return message.ERROR_NOT_FOUND //404
+            }
+        }else {
+            return message.ERROR_INTERNAL_SERVER_MODEL //500 (model)
+        }
+        
+    } catch (error) {
+        
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER
+        
+    }
 }
 
 //Funçaõ para buscar um filme pelo id 
-const buscarFilme = async function(){
+const buscarFilme = async function(id){
 
+    let message = JSON.parse(JSON.stringify(message_config))
+
+    try {
+        //Validação para garantir que o id seja válido
+        if(id === '' || id === null || id === undefined || isNaN(id)){
+            message.ERROR_BAD_RESQUEST.field = '[ID] Inválido'
+            return message.ERROR_BAD_RESQUEST //400
+        }else{
+            let result = await filmeDAO.selectByIdFilme(id)
+
+            if(result){
+                if(result.length > 0){
+                    message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE.status
+                    message.DEFAULT_MESSAGE.status_code = message.SUCESS_RESPONSE.status_code
+                    message.DEFAULT_MESSAGE.response.filme = result
+
+                    return message.DEFAULT_MESSAGE //200
+
+                }else{
+                    return message.ERROR_NOT_FOUND //404
+                }
+            }else{
+                return message.ERROR_INTERNAL_SERVER_MODEL //500 (Model)
+            }
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
 }
 
 //Funcao para excluir um filme
@@ -113,11 +170,14 @@ const validarDados = async function(filme) {
             }
 
     } catch (error) {
+        
         return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 
 module.exports = {
-    inserirNovoFilme
+    inserirNovoFilme,
+    listarFilme,
+    buscarFilme
 }

@@ -42,6 +42,26 @@ app.post('/v1/senai/locadora/filme', bodyParserJSON, async function(request, res
     response.json(result)
 })
 
+app.get('/v1/senai/locadora/filme', async function(request, response) {
+    
+    let result = await controllerFilme.listarFilme()
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+app.get('/v1/senai/locadora/filme/:id', async function(request, response) {
+    //Recebe o id via parametro
+    let id = request.params.id
+
+    let result = await controllerFilme.buscarFilme(id)
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
 //Inicia o servidor
 app.listen(PORT, function(){
     console.log(`Servidor rodando na porta ${PORT}`)
