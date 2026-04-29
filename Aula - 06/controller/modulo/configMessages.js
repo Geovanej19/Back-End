@@ -26,7 +26,12 @@ const ERROR_NOT_FOUND                   = {status: false, status_code: 404, mess
 
 //Mensagens de sucesso da API
 const SUCESS_CREATED_ITEM               = {statu: true, status_code: 201, message: 'Registro inserido com sucesso!'}
+
+//Retorno pata GET
 const SUCESS_RESPONSE                   = {status: true, status_code: 200}
+
+//Retorno para PUT
+const SUCESS_UPDATED_ITEM               = {status: true, status_code: 200, message: 'Registro atualizado com sucesso'} 
 
 
 
@@ -40,6 +45,7 @@ module.exports = {
     SUCESS_CREATED_ITEM,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_NOT_FOUND,
-    SUCESS_RESPONSE
+    SUCESS_RESPONSE,
+    SUCESS_UPDATED_ITEM
     
 }
