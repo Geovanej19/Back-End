@@ -62,6 +62,7 @@ app.get('/v1/senai/locadora/filme/:id', async function(request, response) {
     
 })
 
+//Endpoint para atualizar um filme pelo ID
 app.put('/v1/senai/locadora/filme/:id', bodyParserJSON, async function(request, response){
     //Recebe o content-type da resuisição
     let contentType = request.headers['content-type']
@@ -80,8 +81,14 @@ app.put('/v1/senai/locadora/filme/:id', bodyParserJSON, async function(request, 
     response.json(result)
 })
 
+//Endepoint para deletar o filme pelo ID 
 app.delete('/v1/senai/locadora/filme/:id', async function(request, response) {
-    
+    let id = request.params.id
+
+    let result = await controllerFilme.excluirFilme(id)
+
+    response.status(result.status_code)
+    response.json(result)
 })
 
 //Inicia o servidor

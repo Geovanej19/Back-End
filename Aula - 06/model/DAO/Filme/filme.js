@@ -43,9 +43,10 @@ const insertFilme = async function(filme) {
 
         //Executar o ScriptSQL no Banco de Dados
         let result = await knexConex.raw(sql)
+        
 
         if(result)
-            return true
+            return result[0].insertId // Retorna o ID gerado no BD
         else
             return false
     

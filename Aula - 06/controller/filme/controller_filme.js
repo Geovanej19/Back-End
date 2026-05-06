@@ -13,7 +13,7 @@ const message_config = require('../modulo/configMessages.js')
 const filmeDAO = require('../../model/DAO/Filme/filme.js')
 
 //Função para inserir um novo filme
-const inserirNovoFilme = async function (filme, id, contentType){
+const inserirNovoFilme = async function (filme, contentType){
 
 
     //Criando um clone do objeto JSON para manipular a sua estrutura local sem
@@ -34,9 +34,11 @@ const inserirNovoFilme = async function (filme, id, contentType){
             //encaminha os dados do flme para o DAO
             let result = await filmeDAO.insertFilme(filme)
             if(result){ //201
+                filme.id = result //Criando o atributo id no JSON do filme e colocando o id gerado após o insert
                 message.DEFAULT_MESSAGE.status = message.SUCESS_CREATED_ITEM.status
                 message.DEFAULT_MESSAGE.status_code = message.SUCESS_CREATED_ITEM.status_code
                 message.DEFAULT_MESSAGE.message = message.SUCESS_CREATED_ITEM.message
+                message.DEFAULT_MESSAGE.response = filme
 
             }else{
                 return message.ERROR_INTERNAL_SERVER_MODEL  //500
@@ -88,6 +90,7 @@ const atualizarFilme = async function (filme, id, contentType){
                     message.DEFAULT_MESSAGE.status = message.SUCESS_UPDATED_ITEM.status
                     message.DEFAULT_MESSAGE.status_code = message_config.SUCESS_UPDATED_ITEM.status_code
                     message.DEFAULT_MESSAGE.message = message.SUCESS_UPDATED_ITEM.message
+                    message.DEFAULT_MESSAGE.response = filme
 
                     return message.DEFAULT_MESSAGE //200 (Atualizado)
                 }else{
@@ -156,7 +159,7 @@ const buscarFilme = async function(id){
 
     try {
         //Validação para garantir que o id seja válido
-        if(id === '' || id === null || id === undefined || isNaN(id)){
+        if(id === undefined || id === null || id === '' || isNaN(id)){
             message.ERROR_BAD_RESQUEST.field = '[ID] Inválido'
             return message.ERROR_BAD_RESQUEST //400
         }else{
@@ -191,29 +194,21 @@ const excluirFilme = async function(id){
     let message = JSON.parse(JSON.stringify(message_config))
 
     try {
-        let validacaoID = await validarDados(id)
-        if(validacaoID){
-            message.ERROR_BAD_RESQUEST.field = '[ID] Inválido'
-            return message.ERROR_BAD_RESQUEST //400
-        }
-
+        //Validação do erro 400 e 404
         let resultBuscarID = await buscarFilme(id)
 
+        //Validação para verificar se o status é verdadeiro é verdadeiro (se existe o filme)
         if(resultBuscarID.status){
+            //Chamar função do DAO para excluir o fime
             let result = await filmeDAO.deleteFilme(id)
 
             if(result){
-                message.DEFAULT_MESSAGE.status = message.DEFAULT_MESSAGE.status
-                message.DEFAULT_MESSAGE.status_code = message.DEFAULT_MESSAGE.status_code
-                message.DEFAULT_MESSAGE.response.filme = result
-
-                return message.DEFAULT_MESSAGE //200
+                return message.SUCESS_DELETED_ITEM //200 (Registro exluído)
             }else {
-                return message.ERROR_INTERNAL_SERVER_MODEL //500
+                return message.ERROR_INTERNAL_SERVER_MODEL //500 (model)
             }
-
         }else {
-            return resultBuscarID
+            return resultBuscarID //400 ou 404
         }
 
 
@@ -229,20 +224,20 @@ const validarDados = async function(filme) {
 
     try {
         
-        if(filme.nome == '' || filme.nome == null ||  filme.nome == undefined || filme.nome.length > 80){
+        if(filme.nome == undefined || filme.nome == null ||  filme.nome == '' || filme.nome.length > 80){
             message.ERROR_BAD_RESQUEST.field = '[NOME] INVÁLIDO'
             return message.ERROR_BAD_RESQUEST //400
         
-            }else if(filme.data_lancamento == '' || filme.data_lancamento == null || filme.data_lancamento == undefined || filme.data_lancamento.length != 10){
+            }else if(filme.data_lancamento == undefined || filme.data_lancamento == null || filme.data_lancamento == '' || filme.data_lancamento.length != 10){
                 message.ERROR_BAD_RESQUEST.field = '[DATA_LANCAMENTO] INVÁLIDA'
                 return message.ERROR_BAD_RESQUEST
         
-            }else if(filme.duracao == '' || filme.duracao == null || filme.duracao == undefined || filme.duracao.length < 5){
+            }else if(filme.duracao == undefined || filme.duracao == null || filme.duracao == '' || filme.duracao.length < 5){
                 message.ERROR_BAD_RESQUEST.field = '[DURACAO] INVÁLIDA'
                 return message.ERROR_BAD_RESQUEST
         
         
-            }else if(filme.sinopse == '' || filme.sinopse == null || filme.sinopse == undefined ){
+            }else if(filme.sinopse == undefined || filme.sinopse == null || filme.sinopse == '' ){
                 message.ERROR_BAD_RESQUEST.field = '[SINOPSE] INVÁLIDA'
                 return message.ERROR_BAD_RESQUEST
         

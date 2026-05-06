@@ -33,6 +33,9 @@ const SUCESS_RESPONSE                   = {status: true, status_code: 200}
 //Retorno para PUT
 const SUCESS_UPDATED_ITEM               = {status: true, status_code: 200, message: 'Registro atualizado com sucesso'} 
 
+//Retorno para o DELETE (200 ou 204)
+const SUCESS_DELETED_ITEM               = {status: true, status_code: 200, message: 'Registro excluido co sucsso'}
+
 
 
 
@@ -46,6 +49,7 @@ module.exports = {
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_NOT_FOUND,
     SUCESS_RESPONSE,
-    SUCESS_UPDATED_ITEM
+    SUCESS_UPDATED_ITEM,
+    SUCESS_DELETED_ITEM
     
 }
