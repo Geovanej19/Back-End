@@ -52,8 +52,6 @@ const inserirNovoFilme = async function (filme, contentType){
     }
 }
 
-
-
 //Função para atualizar um filme
 const atualizarFilme = async function (filme, id, contentType){
 

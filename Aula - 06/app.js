@@ -91,6 +91,11 @@ app.delete('/v1/senai/locadora/filme/:id', async function(request, response) {
     response.json(result)
 })
 
+app.post('/v1/senai/filme/personagem', async function(request, response) {
+    let id
+    
+})
+
 //Inicia o servidor
 app.listen(PORT, function(){
     console.log(`Servidor rodando na porta ${PORT}`)
