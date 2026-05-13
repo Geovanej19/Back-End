@@ -94,8 +94,8 @@ app.delete('/v1/senai/locadora/filme/:id', async function(request, response) {
     response.json(result)
 })
 
-app.post('/v1/senai/filme/personagem', async function(request, response) {
-    
+//Endepoint para inserir personagem
+app.post('/v1/senai/filme/personagem', bodyParserJSON, async function(request, response) {
     let dados = request.body
 
     let contentType = request.headers['content-type']
@@ -105,6 +105,54 @@ app.post('/v1/senai/filme/personagem', async function(request, response) {
     response.status(result.status_code)
     response.json(result)
     
+})
+
+//Endepoint para listar personagens
+app.get('/v1/senai/filme/personagem', async function(request, response) {
+    
+    let result = await controllerPersonagem.listarPersonagens()
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+//Endepoint para buscar personagens pelo (ID)
+app.get('/v1/senai/filme/personagem/:id', async function(request, response) {
+    //recebe o id via Parametro
+    let id = request.params.id
+
+    let result = await controllerPersonagem.buscarPersonagem(id)
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+//Endepoint para atualizar personagem
+app.put('/v1/senai/filme/personagem/:id', bodyParserJSON, async function(request, response){
+
+    //Recebe o content-type da resuisição
+    let contentType = request.headers['content-type']
+
+    let id = request.params.id
+
+    let dados = request.body
+
+    let result = await controllerPersonagem.atualizarPersonagem(dados, id, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+//Endepoint para deletar personagens
+app.delete('/v1/senai/filme/personagem/:id', async function(request, response) {
+    let id = request.params.id
+
+    let result = await controllerPersonagem.excluirPersonagem(id)
+
+    response.status(result.status_code)
+    response.json(result)
 })
 
 //Inicia o servidor

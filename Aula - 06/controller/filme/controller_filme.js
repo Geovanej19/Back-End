@@ -97,8 +97,7 @@ const atualizarFilme = async function (filme, id, contentType){
 
             }else {
                 return validar //400
-
-                
+ 
             }
 
         }else {
@@ -129,7 +128,7 @@ const listarFilme = async function (){
         if(result){
             //Validação para verificr se existe conteúdo no Array
             if(result.length > 0){
-                message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE .status
+                message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE.status
                 message.DEFAULT_MESSAGE.status_code = message.SUCESS_RESPONSE.status_code
                 message.DEFAULT_MESSAGE.response.count = result.length
                 message.DEFAULT_MESSAGE.response.filme = result
