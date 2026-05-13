@@ -20,7 +20,7 @@ const inserirNovoPersonagem = async function(personagem, contentType) {
     let message = JSON.parse(JSON.stringify(message_config))
 
     try {
-        if(String(contentType).includes('aplication/json')){
+        if(String(contentType).includes('application/json')){
 
             let validar = await validarDados(personagem)
 
@@ -29,7 +29,7 @@ const inserirNovoPersonagem = async function(personagem, contentType) {
                 return validar
 
             }else{
-                let result = personagemDAO.insertNewCaracter(personagem)
+                let result = await personagemDAO.insertNewCaracter(personagem)
 
                 if(result){ //201
 

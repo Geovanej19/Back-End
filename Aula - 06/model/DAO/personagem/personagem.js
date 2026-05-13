@@ -22,7 +22,7 @@ const knexConex = knex(knexConfig.development)
 const insertNewCaracter = async function(personagem) {
     try {
 
-        let sql = `instert into tbl_personagem (
+        let sql = `insert into tbl_personagem (
                     nome
                     )
             values (
@@ -35,11 +35,10 @@ const insertNewCaracter = async function(personagem) {
 
     if(result){
         return result
-    }else {
-        return false
     }
 
     } catch (error) {
+        console.log('Erro ao inserir um personagem: ', error);
         return false
     }
 }
