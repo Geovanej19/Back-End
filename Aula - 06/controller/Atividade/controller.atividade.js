@@ -1,7 +1,7 @@
 /*********************************************************************************************************
  * Objetivo: Arquivo responsavel pela validação , tratamento e
  *      manipulacao de dados para o CRUD de filmes
- * Data: 08/05/2026
+ * Data: 15/05/2026
  * Autor: Geovane
  * Versão: 1.0
  *********************************************************************************************************/
@@ -10,11 +10,10 @@
 const message_config = require('../modulo/configMessages.js')
 
 //Import do arquivo DAO para fazer o CRUD do filme no banco de dados
-const personagemDAO = require('../../model/DAO/personagem/personagem.js')
-
+const atividadeDAO = require('../../model/DAO/Atividade/atividade.js')
 
 //Função para inserir um novo Personagem
-const inserirNovoPersonagem = async function(personagem, contentType) {
+const inserirNovaAtividade = async function(atividade, contentType) {
 
     //Criando clone do objeto JSOn paea manipular a sua estrutura local sem modificar a estrutura original
     let message = JSON.parse(JSON.stringify(message_config))
@@ -22,14 +21,14 @@ const inserirNovoPersonagem = async function(personagem, contentType) {
     try {
         if(String(contentType).includes('application/json')){
 
-            let validar = await validarDados(personagem)
+            let validar = await validarDados(atividade)
 
 
             if(validar){
                 return validar
 
             }else{
-                let result = await personagemDAO.insertNewCharacter(personagem)
+                let result = await atividadeDAO.insertNewAtividade(atividade)
 
                 if(result){ //201
 
@@ -37,7 +36,7 @@ const inserirNovoPersonagem = async function(personagem, contentType) {
                     message.DEFAULT_MESSAGE.status = message.SUCESS_CREATED_ITEM.status
                     message.DEFAULT_MESSAGE.status_code = message.SUCESS_CREATED_ITEM.status_code
                     message.DEFAULT_MESSAGE.message = message.SUCESS_CREATED_ITEM.message
-                    message.DEFAULT_MESSAGE.response = personagem
+                    message.DEFAULT_MESSAGE.response = atividade
 
                 }else {
                     return message.ERROR_INTERNAL_SERVER_MODEL //500 (model)
@@ -55,36 +54,36 @@ const inserirNovoPersonagem = async function(personagem, contentType) {
     }
 }
 
-//Funcção para atualizar um personagem
-const atualizarPersonagem = async function(personagem, id, contentType){
+//Funcção para atualizar uma atividade
+const atualizarAtividade = async function(atividade, id, contentType){
 
     //Criando clone do objeto JSOn paea manipular a sua estrutura local sem modificar a estrutura original
     let message = JSON.parse(JSON.stringify(message_config))
    
     try {
         //Validação do contente type para receber apenas Json
-        // ✅ Consistente e funciona com charset
+        // Consistente e funciona com charset
         if(String(contentType).includes('application/json')){
 
             //Validação para o ID correto
-            let resultBuscarID = await Buscarpersonagem(id)
+            let resultBuscarID = await buscarAtividade(id)
 
             if(resultBuscarID.status){
-                let validar = await validarDados(personagem)
+                let validar = await validarDados(atividade)
 
                 //Validação de campos obrigatórios para a atualização (Body)
                 if(!validar){
                     //Adiciono o atributo ID do filme no Json para ser enviado ao DAO
-                    personagem.id = id
+                    atividade.id = id
 
 
-                    let result = await personagemDAO.updateCharacter(personagem)
+                    let result = await atividadeDAO.updateAtividade(atividade)
 
                     if(result){
                         message.DEFAULT_MESSAGE.status = message.SUCESS_UPDATED_ITEM.status
                         message.DEFAULT_MESSAGE.status_code = message_config.SUCESS_UPDATED_ITEM.status_code
                         message.DEFAULT_MESSAGE.message = message.SUCESS_UPDATED_ITEM.message
-                        message.DEFAULT_MESSAGE.response = personagem
+                        message.DEFAULT_MESSAGE.response = atividade
 
                         return message.DEFAULT_MESSAGE //200 (Atualizado)
                     }else{
@@ -101,7 +100,7 @@ const atualizarPersonagem = async function(personagem, id, contentType){
             return message.ERROR_CONTENT_TYPE //415
         }
     } catch (error) {
-        console.log('ERRO CONTROLLER atualizarPersonagem:', error)
+        console.log('ERRO CONTROLLER atualizarAtividade:', error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
@@ -113,7 +112,7 @@ const listarPersonagens = async function() {
 
     try {
         
-        let result = await personagemDAO.selectAllCharacter()
+        let result = await atividadeDAO.selectAllAtividade()
 
         if(result){
 
@@ -140,7 +139,7 @@ const listarPersonagens = async function() {
 }
 
 
-const buscarPersonagem = async function(id) {
+const buscarAtividade = async function(id) {
     
     let message = JSON.parse(JSON.stringify(message_config))
 
@@ -150,7 +149,7 @@ const buscarPersonagem = async function(id) {
             message.ERROR_BAD_RESQUEST.field = '[ID] Inválido'
             return message.ERROR_BAD_RESQUEST //400
         }else{
-            let result = await personagemDAO.selectByIdCharacter(id)
+            let result = await atividadeDAO.selectByIdAtividade(id)
 
             if(result){
                 if(result.length > 0){
@@ -168,7 +167,7 @@ const buscarPersonagem = async function(id) {
             }
         }
     } catch (error) {
-        console.log('ERRO CONTROLLER buscarPersonagem:', error)
+        console.log('ERRO CONTROLLER buscarAtividade:', error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
@@ -219,7 +218,7 @@ const validarDados = async function(personagem) {
 }
 
 module.exports = {
-    inserirNovoPersonagem,
+    inserirNovaAtividade,
     listarPersonagens,
     buscarPersonagem,
     atualizarPersonagem,

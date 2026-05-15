@@ -10,11 +10,11 @@
 const message_config = require('../modulo/configMessages.js')
 
 //Import do arquivo DAO para fazer o CRUD do filme no banco de dados
-const personagemDAO = require('../../model/DAO/personagem/personagem.js')
+const sexoDAO = require('../../model/DAO/Sexo/sexo.js')
 
 
-//Função para inserir um novo Personagem
-const inserirNovoPersonagem = async function(personagem, contentType) {
+//Função para inserir um novo Sexo
+const inserirNovoSexo = async function(sexo, contentType) {
 
     //Criando clone do objeto JSOn paea manipular a sua estrutura local sem modificar a estrutura original
     let message = JSON.parse(JSON.stringify(message_config))
@@ -22,22 +22,22 @@ const inserirNovoPersonagem = async function(personagem, contentType) {
     try {
         if(String(contentType).includes('application/json')){
 
-            let validar = await validarDados(personagem)
+            let validar = await validarDados(sexo)
 
 
             if(validar){
                 return validar
 
             }else{
-                let result = await personagemDAO.insertNewCharacter(personagem)
+                let result = await sexoDAO.insertNewSexo(sexo)
 
                 if(result){ //201
 
-                    personagem.id = result
+                    sexo.id = result
                     message.DEFAULT_MESSAGE.status = message.SUCESS_CREATED_ITEM.status
                     message.DEFAULT_MESSAGE.status_code = message.SUCESS_CREATED_ITEM.status_code
                     message.DEFAULT_MESSAGE.message = message.SUCESS_CREATED_ITEM.message
-                    message.DEFAULT_MESSAGE.response = personagem
+                    message.DEFAULT_MESSAGE.response = sexo
 
                 }else {
                     return message.ERROR_INTERNAL_SERVER_MODEL //500 (model)
@@ -55,42 +55,41 @@ const inserirNovoPersonagem = async function(personagem, contentType) {
     }
 }
 
-//Funcção para atualizar um personagem
-const atualizarPersonagem = async function(personagem, id, contentType){
+const atualizarSexo = async function(sexo, id, contentType) {
 
-    //Criando clone do objeto JSOn paea manipular a sua estrutura local sem modificar a estrutura original
+     //Criando clone do objeto JSOn paea manipular a sua estrutura local sem modificar a estrutura original
     let message = JSON.parse(JSON.stringify(message_config))
-   
+       
     try {
         //Validação do contente type para receber apenas Json
-        // ✅ Consistente e funciona com charset
+        //Consistente e funciona com charset
         if(String(contentType).includes('application/json')){
-
+    
             //Validação para o ID correto
-            let resultBuscarID = await Buscarpersonagem(id)
-
+            let resultBuscarID = await buscarSexo(id)
+    
             if(resultBuscarID.status){
-                let validar = await validarDados(personagem)
-
+                let validar = await validarDados(sexo)
+    
                 //Validação de campos obrigatórios para a atualização (Body)
                 if(!validar){
                     //Adiciono o atributo ID do filme no Json para ser enviado ao DAO
-                    personagem.id = id
-
-
-                    let result = await personagemDAO.updateCharacter(personagem)
-
+                    sexo.id = id
+    
+    
+                    let result = await sexoDAO.updateSexo(sexo)
+    
                     if(result){
                         message.DEFAULT_MESSAGE.status = message.SUCESS_UPDATED_ITEM.status
                         message.DEFAULT_MESSAGE.status_code = message_config.SUCESS_UPDATED_ITEM.status_code
                         message.DEFAULT_MESSAGE.message = message.SUCESS_UPDATED_ITEM.message
-                        message.DEFAULT_MESSAGE.response = personagem
-
+                        message.DEFAULT_MESSAGE.response = sexo
+    
                         return message.DEFAULT_MESSAGE //200 (Atualizado)
                     }else{
                         return message.ERROR_INTERNAL_SERVER_MODEL //500 (Model)
                     }
-
+    
                 }else{
                     return validar //400
                 }
@@ -101,65 +100,64 @@ const atualizarPersonagem = async function(personagem, id, contentType){
             return message.ERROR_CONTENT_TYPE //415
         }
     } catch (error) {
-        console.log('ERRO CONTROLLER atualizarPersonagem:', error)
+        console.log('ERRO CONTROLLER atualizarSexo:', error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
 
-
-const listarPersonagens = async function() {
-    
+const listarSexo = async function() {
     let message = JSON.parse(JSON.stringify(message_config))
 
     try {
-        
-        let result = await personagemDAO.selectAllCharacter()
+      
+      let result = await sexoDAO.selectAllSexo()
 
-        if(result){
+      if(result){
 
-            if(result.length > 0){
-                message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE.status
-                message.DEFAULT_MESSAGE.status_code = message.SUCESS_RESPONSE.status_code
-                message.DEFAULT_MESSAGE.response.count = result.length
-                message.DEFAULT_MESSAGE.response.personagem = result
+          if(result.length > 0){
+              message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE.status
+              message.DEFAULT_MESSAGE.status_code = message.SUCESS_RESPONSE.status_code
+              message.DEFAULT_MESSAGE.response.count = result.length
+              message.DEFAULT_MESSAGE.response.sexo = result
 
-                return message.DEFAULT_MESSAGE //200
+              return message.DEFAULT_MESSAGE //200
 
-            }else{
-                return message.ERROR_NOT_FOUND //404
-            }
+          }else{
+              return message.ERROR_NOT_FOUND //404
+          }
 
-        }else{
-            return message.ERROR_INTERNAL_SERVER_MODEL //500 (model)
-        }
+      }else{
+          return message.ERROR_INTERNAL_SERVER_MODEL //500 (model)
+      }
 
     } catch (error) {
-        
-        return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
+        console.error("Erro ao listar sexo:", error.message);
+      return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
 
-
-const buscarPersonagem = async function(id) {
+const buscarSexo = async function(id) {
     
     let message = JSON.parse(JSON.stringify(message_config))
-
+    
     try {
-
+    
         if(id === undefined || id === null || id === '' || isNaN(id)){
             message.ERROR_BAD_RESQUEST.field = '[ID] Inválido'
-            return message.ERROR_BAD_RESQUEST //400
-        }else{
-            let result = await personagemDAO.selectByIdCharacter(id)
 
+            return message.ERROR_BAD_RESQUEST //400
+
+        }else{
+            let result = await sexoDAO.selectByIdSexo(id)
+    
             if(result){
                 if(result.length > 0){
                     message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE.status
                     message.DEFAULT_MESSAGE.status_code = message.SUCESS_RESPONSE.status_code
                     message.DEFAULT_MESSAGE.response = result
-
+    
                     return message.DEFAULT_MESSAGE //200
-
+    
                 }else{
                     return message.ERROR_NOT_FOUND //404
                 }
@@ -168,46 +166,45 @@ const buscarPersonagem = async function(id) {
             }
         }
     } catch (error) {
-        console.log('ERRO CONTROLLER buscarPersonagem:', error)
+        console.log('ERRO CONTROLLER buscarSexo:', error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
 
-
-const excluirPersonagem = async function(id) {
-    
-    let message = JSON.parse(JSON.stringify(message_config))
-    
-        try {
-            //Validação do erro 400 e 404
-            let resultBuscarID = await buscarPersonagem(id)
-    
-            //Validação para verificar se o status é verdadeiro é verdadeiro (se existe o filme)
-            if(resultBuscarID.status){
-                //Chamar função do DAO para excluir o fime
-                let result = await personagemDAO.deleteCaracter(id)
-    
-                if(result){
-                    return message.SUCESS_DELETED_ITEM //200 (Registro exluído)
+const excluirSexo = async function(id) {
+     let message = JSON.parse(JSON.stringify(message_config))
+        
+            try {
+                //Validação do erro 400 e 404
+                let resultBuscarID = await buscarSexo(id)
+        
+                //Validação para verificar se o status é verdadeiro é verdadeiro (se existe o filme)
+                if(resultBuscarID.status){
+                    //Chamar função do DAO para excluir o fime
+                    let result = await sexoDAO.deleteSexo(id)
+        
+                    if(result){
+                        return message.SUCESS_DELETED_ITEM //200 (Registro exluído)
+                    }else {
+                        return message.ERROR_INTERNAL_SERVER_MODEL //500 (model)
+                    }
                 }else {
-                    return message.ERROR_INTERNAL_SERVER_MODEL //500 (model)
+                    return resultBuscarID //400 ou 404
                 }
-            }else {
-                return resultBuscarID //400 ou 404
+        
+        
+            } catch (error) {
+                return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
             }
-    
-    
-        } catch (error) {
-            return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
-        }
 }
 
-const validarDados = async function(personagem) {
+const validarDados = async function(sexo) {
 
     let message = JSON.parse(JSON.stringify(message_config))
 
     try {
-        if (personagem.nome === undefined || personagem.nome === '' || personagem.nome === null) {
+        if (sexo.sigla === undefined || sexo.sigla === '' || sexo.sigla === null
+            || sexo.descricao === undefined || sexo.descricao === '' || sexo.descricao === null) {
             return message_config.ERROR_REQUIRED_FIELDS // 400
         }
         return false
@@ -219,10 +216,10 @@ const validarDados = async function(personagem) {
 }
 
 module.exports = {
-    inserirNovoPersonagem,
-    listarPersonagens,
-    buscarPersonagem,
-    atualizarPersonagem,
-    excluirPersonagem,
-    validarDados
+    inserirNovoSexo,
+    atualizarSexo,
+    listarSexo,
+    buscarSexo,
+    validarDados,
+    excluirSexo
 }

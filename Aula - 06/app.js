@@ -9,6 +9,8 @@ const controllerFilme = require('./controller/filme/controller_filme.js')
 //Import das controllers do projeto
 const controllerPersonagem = require('./controller/personagem/controller_personagem.js')
 
+const controllerSexo = require('./controller/Sexo/controller_sexo.js')
+
 //Criando um objeto para manipular dados do body da API em formato JSON
 const bodyParserJSON = bodyParser.json()
 
@@ -150,6 +152,64 @@ app.delete('/v1/senai/filme/personagem/:id', async function(request, response) {
     let id = request.params.id
 
     let result = await controllerPersonagem.excluirPersonagem(id)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+//Endepoint para inserir um novo sexo
+app.post('/v1/senai/filme/sexo', bodyParserJSON, async function(request, response){
+    let dados = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let result = await controllerSexo.inserirNovoSexo(dados, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+app.get('/v1/senai/filme/sexo', async function(request, response) {
+
+    let result = await controllerSexo.listarSexo()
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+app.get('/v1/senai/filme/sexo/:id', async function(request, response) {
+    //recebe o id via Parametro
+    let id = request.params.id
+
+    let result = await controllerSexo.buscarSexo(id)
+   
+    response.status(result.status_code)
+    response.json(result)
+})
+
+//Endepoint para atualizar Sexo
+app.put('/v1/senai/filme/sexo/:id', bodyParserJSON, async function(request, response){
+
+    //Recebe o content-type da resuisição
+    let contentType = request.headers['content-type']
+
+    let id = request.params.id
+
+    let dados = request.body
+
+    let result = await controllerSexo.atualizarSexo(dados, id, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+//Endepoint para deletar personagens
+app.delete('/v1/senai/filme/sexo/:id', async function(request, response) {
+    let id = request.params.id
+
+    let result = await controllerSexo.excluirSexo(id)
 
     response.status(result.status_code)
     response.json(result)
