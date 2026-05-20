@@ -11,6 +11,9 @@ const controllerPersonagem = require('./controller/personagem/controller_persona
 
 const controllerSexo = require('./controller/Sexo/controller_sexo.js')
 
+const controllerClassificacao = require('./controller/classificacao/controller_classificacao.js')
+
+const controllerAtividade = require('./controller/Atividade/controller.atividade.js')
 //Criando um objeto para manipular dados do body da API em formato JSON
 const bodyParserJSON = bodyParser.json()
 
@@ -205,7 +208,7 @@ app.put('/v1/senai/filme/sexo/:id', bodyParserJSON, async function(request, resp
     
 })
 
-//Endepoint para deletar personagens
+//Endepoint para deletar sexo
 app.delete('/v1/senai/filme/sexo/:id', async function(request, response) {
     let id = request.params.id
 
@@ -215,6 +218,124 @@ app.delete('/v1/senai/filme/sexo/:id', async function(request, response) {
     response.json(result)
 })
 
+//Endepoint para inserir uma nova classificação
+app.post('/v1/senai/filme/classificacao', bodyParserJSON, async function(request, response){
+    let dados = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let result = await controllerClassificacao.inserirNovaClassificacao(dados, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+app.get('/v1/senai/filme/classificacao', async function(request, response) {
+
+    let result = await controllerClassificacao.listarClassificacoes()
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+app.get('/v1/senai/filme/classificacao/:id', async function(request, response) {
+    //recebe o id via Parametro
+    let id = request.params.id
+
+    let result = await controllerClassificacao.buscarClassificacao(id)
+   
+    response.status(result.status_code)
+    response.json(result)
+})
+
+//Endepoint para atualizar Classificação
+app.put('/v1/senai/filme/classificacao/:id', bodyParserJSON, async function(request, response){
+
+    //Recebe o content-type da resuisição
+    let contentType = request.headers['content-type']
+
+    let id = request.params.id
+
+    let dados = request.body
+
+    let result = await controllerClassificacao.atualizarClassificacao(dados, id, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+//Endepoint para deletar classificação
+app.delete('/v1/senai/filme/classificacao/:id', async function(request, response) {
+    let id = request.params.id
+
+    let result = await controllerClassificacao.excluirClassificacao(id)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+//Endepoint para inserir uma nova Atividade
+app.post('/v1/senai/filme/atividade', bodyParserJSON, async function(request, response){
+    let dados = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let result = await controllerAtividade.inserirNovaAtividade(dados, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+app.get('/v1/senai/filme/atividade', async function(request, response) {
+
+    let result = await controllerAtividade.listarAtividades()
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+app.get('/v1/senai/filme/atividade/:id', async function(request, response) {
+    //recebe o id via Parametro
+    let id = request.params.id
+
+    let result = await controllerAtividade.buscarAtividade(id)
+   
+    response.status(result.status_code)
+    response.json(result)
+})
+
+//Endepoint para atualizar Atividade
+app.put('/v1/senai/filme/atividade/:id', bodyParserJSON, async function(request, response){
+
+    //Recebe o content-type da resuisição
+    let contentType = request.headers['content-type']
+
+    let id = request.params.id
+
+    let dados = request.body
+
+    let result = await controllerAtividade.atualizarClassificacao(dados, id, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+//Endepoint para deletar atividade
+app.delete('/v1/senai/filme/atividade/:id', async function(request, response) {
+    let id = request.params.id
+
+    let result = await controllerAtividade.excluirAtividade(id)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+
+//Endepoint para 
 //Inicia o servidor
 app.listen(PORT, function(){
     console.log(`Servidor rodando na porta ${PORT}`)
