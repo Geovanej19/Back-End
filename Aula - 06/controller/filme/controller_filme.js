@@ -15,6 +15,8 @@ const filmeDAO = require('../../model/DAO/Filme/filme.js')
 //Import de arquivos de controller
 const controller_classificacao = require('../classificacao/controller_classificacao.js')
 
+const controller_filme_genero = require('./controller_filme_genero.js')
+
 //Função para inserir um novo filme
 const inserirNovoFilme = async function (filme, contentType){
 
@@ -38,6 +40,24 @@ const inserirNovoFilme = async function (filme, contentType){
             let result = await filmeDAO.insertFilme(filme)
             if(result){ //201
                 filme.id = result //Criando o atributo id no JSON do filme e colocando o id gerado após o insert
+
+                //Manipulação de dados para inserir os Generos do Filme
+                for (genero of filme.genero){
+          
+                    //Cria o objeto json com os ids do filme e do genero
+                    let filmeGenero =  {"id_filme" : filme.id, 
+                                        "id_genero" : genero.id
+                                    }
+
+                    //Chama a controller do filme genero para inserir os IDS
+                    let resultInsertGenero = await controller_filme_genero.inserirNovoFilmeGenero(filmeGenero)
+
+                    if(!resultInsertGenero.status){
+                        return message.SUCESS_CREATED_ITEM_WARNING //201 com alerta de dados não inseridos
+                    }
+                }
+
+
                 message.DEFAULT_MESSAGE.status = message.SUCESS_CREATED_ITEM.status
                 message.DEFAULT_MESSAGE.status_code = message.SUCESS_CREATED_ITEM.status_code
                 message.DEFAULT_MESSAGE.message = message.SUCESS_CREATED_ITEM.message
@@ -136,7 +156,7 @@ const listarFilme = async function (){
                 for(filme of result){
 
                     //Busca na controller da classificação o ID referente aos dados
-                    let resulClassificacao = await controller_classificacao.buscatClassificacao(filme.id_classificacao)
+                    let resulClassificacao = await controller_classificacao.buscarClassificacao(filme.id_classificacao)
                     //Se a classificação for encontrada
                     if(resulClassificacao.status){
                         //Cria o atributo classificação no filme e adiciona os dados referente a classificação
@@ -145,6 +165,12 @@ const listarFilme = async function (){
                         //Apaga o atributo id_classificação do filme para não ficar repetido
                         delete filme.id_classificacao
 
+                    }
+
+                    //Cria  objeto de generos relaxionados ao filme
+                    let resultGenero = await controller_filme_genero.buscarGeneroIdFilme(filme.id)
+                    if(resultGenero.status){
+                        filme.genero = resultGenero.response.filme_genero
                     }
                 }
 

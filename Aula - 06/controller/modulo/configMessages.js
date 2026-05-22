@@ -27,6 +27,9 @@ const ERROR_NOT_FOUND                   = {status: false, status_code: 404, mess
 //Mensagens de sucesso da API
 const SUCESS_CREATED_ITEM               = {statu: true, status_code: 201, message: 'Registro inserido com sucesso!'}
 
+//Mensagens de sucesso da API
+const SUCESS_CREATED_ITEM_WARNING       = {statu: true, status_code: 201, message: 'Os dados principais foram inseridos com sucesso, porém alguns apresenaram problema!'}
+
 //Retorno pata GET
 const SUCESS_RESPONSE                   = {status: true, status_code: 200}
 
@@ -50,6 +53,7 @@ module.exports = {
     ERROR_NOT_FOUND,
     SUCESS_RESPONSE,
     SUCESS_UPDATED_ITEM,
-    SUCESS_DELETED_ITEM
+    SUCESS_DELETED_ITEM,
+    SUCESS_CREATED_ITEM_WARNING
     
 }

@@ -2,7 +2,7 @@
  * 
  * Objetivo: Arquivo responsável pelo CRUD no Banco de dados MySQL na tabela 
  *      Filme
- * Data: 15/05/2026
+ * Data: 22/05/2026
  * Autor: Geovane
  * Versão: 1.0
  * 
@@ -19,29 +19,29 @@ const knexConex = knex(knexConfig.development)
 
 
 //Função para inserir dados na tabela de personagem
-const insertNewAtividade = async function(atividade) {
+const insertNewGenero = async function(genero) {
 
     try {
-        const sql = `insert into tbl_atividade (tipo_atividade) values (?)`
-        const result = await knexConex.raw(sql, [atividade.tipo_atividade])
+        const sql = `insert into tbl_genero (nome) values (?)`
+        const result = await knexConex.raw(sql, [genero.nome])
 
         return result[0].insertId || false
 
     } catch (error) {
-        console.log('Erro ao inserir um atividade: ', error)
+        console.log('Erro ao inserir um genero: ', error)
         return false
     }
 }
 
 
 //Função para atualizar um personagem existente na tabela
-const updateAtividade = async function(atividade) {
+const updateGenero = async function(genero) {
 
     try {
         
-        let sql = `update tbl_atividade set
-        tipo_atividade =        '${atividade.tipo_atividade}'
-        where id =              '${atividade.id}';`
+        let sql = `update tbl_genero set
+        nome =        '${genero.nome}'
+        where id =     '${genero.id}';`
 
         let result = await knexConex.raw(sql)
 
@@ -59,10 +59,10 @@ const updateAtividade = async function(atividade) {
 
 
 //Função para retornar todos os dados da tabela de pesonagem
-const selectAllAtividade = async function() {
+const selectAllGenero = async function() {
     try {
         
-        let sql = `select * from tbl_atividade order by id desc`
+        let sql = `select * from tbl_genero order by id desc`
 
         let result = await knexConex.raw(sql)
 
@@ -80,11 +80,11 @@ const selectAllAtividade = async function() {
 
 
 //Função para retornar os dados da atividade fitrando pelo ID
-const selectByIdAtividade = async function(id) {
+const selectByIdGenero = async function(id) {
     
     try {
         
-        let sql = `select * from tbl_atividade where id= ?`
+        let sql = `select * from tbl_genero where id= ?`
 
         let result = await knexConex.raw(sql, [id])
 
@@ -95,16 +95,16 @@ const selectByIdAtividade = async function(id) {
         }
         
     } catch (error) {
-        console.log('Erro ao buscar atividade por ID: ', error)
+        console.log('Erro ao buscar Genero por ID: ', error)
         return false
     }
 }
 
 
 //Função para excluir uma atividade pelo ID
-const deleteAtividade = async function(id) {
+const deleteGenero = async function(id) {
     try {
-        let sql = `delete from tbl_atividade where id=${id}`
+        let sql = `delete from tbl_genero where id=${id}`
 
         let result = await knexConex.raw(sql)
 
@@ -121,9 +121,9 @@ const deleteAtividade = async function(id) {
 }
 
 module.exports = {
-    insertNewAtividade,
-    updateAtividade,
-    selectAllAtividade,
-    selectByIdAtividade,
-    deleteAtividade
+    insertNewGenero,
+    updateGenero,
+    selectAllGenero,
+    selectByIdGenero,
+    deleteGenero
 }

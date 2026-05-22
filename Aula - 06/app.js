@@ -14,6 +14,9 @@ const controllerSexo = require('./controller/Sexo/controller_sexo.js')
 const controllerClassificacao = require('./controller/classificacao/controller_classificacao.js')
 
 const controllerAtividade = require('./controller/Atividade/controller.atividade.js')
+
+const controllerGenero = require('./controller/genero/controller_genero.js')
+
 //Criando um objeto para manipular dados do body da API em formato JSON
 const bodyParserJSON = bodyParser.json()
 
@@ -317,7 +320,7 @@ app.put('/v1/senai/filme/atividade/:id', bodyParserJSON, async function(request,
 
     let dados = request.body
 
-    let result = await controllerAtividade.atualizarClassificacao(dados, id, contentType)
+    let result = await controllerAtividade.atualizarAtividade(dados, id, contentType)
 
     response.status(result.status_code)
     response.json(result)
@@ -334,6 +337,53 @@ app.delete('/v1/senai/filme/atividade/:id', async function(request, response) {
     response.json(result)
 })
 
+//Endepoint para inserir uma nova Atividade
+app.post('/v1/senai/filme/genero', bodyParserJSON, async function(request, response){
+    let dados = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let result = await controllerGenero.inserirGenero(dados, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+app.get('/v1/senai/filme/genero', async function(request, response) {
+
+    let result = await controllerGenero.listarGenero()
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+app.get('/v1/senai/filme/genero/:id', async function(request, response) {
+    //recebe o id via Parametro
+    let id = request.params.id
+
+    let result = await controllerGenero.buscarGenero(id)
+   
+    response.status(result.status_code)
+    response.json(result)
+})
+
+//Endepoint para atualizar Genero
+app.put('/v1/senai/filme/atividade/:id', bodyParserJSON, async function(request, response){
+
+    //Recebe o content-type da resuisição
+    let contentType = request.headers['content-type']
+
+    let id = request.params.id
+
+    let dados = request.body
+
+    let result = await controllerGenero.atualizarGenero(dados, id, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
 
 //Endepoint para 
 //Inicia o servidor
