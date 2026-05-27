@@ -17,6 +17,8 @@ const controllerAtividade = require('./controller/Atividade/controller.atividade
 
 const controllerGenero = require('./controller/genero/controller_genero.js')
 
+const controllerNacionalidade = require('./controller/nacionalidade/controller_nacionalidade.js')
+
 //Criando um objeto para manipular dados do body da API em formato JSON
 const bodyParserJSON = bodyParser.json()
 
@@ -390,6 +392,63 @@ app.delete('/v1/senai/filme/genero/:id', async function(request, response) {
     let id = request.params.id
 
     let result = await controllerGenero.excluirGenero(id)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+app.post('/v1/senai/filme/nacionalidade', bodyParserJSON, async function(request, response){
+    let dados = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let result = await controllerNacionalidade.inserirNovaNacionalidade(dados, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+app.get('/v1/senai/filme/nacionalidade', async function(request, response) {
+
+    let result = await controllerNacionalidade.listarNacionalidade()
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+app.get('/v1/senai/filme/nacionalidade/:id', async function(request, response) {
+    //recebe o id via Parametro
+    let id = request.params.id
+
+    let result = await controllerNacionalidade.buscarNacionalidade(id)
+   
+    response.status(result.status_code)
+    response.json(result)
+})
+
+//Endepoint para atualizar Genero
+app.put('/v1/senai/filme/nacionalidade/:id', bodyParserJSON, async function(request, response){
+
+    //Recebe o content-type da resuisição
+    let contentType = request.headers['content-type']
+
+    let id = request.params.id
+
+    let dados = request.body
+
+    let result = await controllerNacionalidade.atualizarNacionalidade(dados, id, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
+//Endepoint para deletar atividade
+app.delete('/v1/senai/filme/nacionalidade/:id', async function(request, response) {
+    let id = request.params.id
+
+    let result = await controllerNacionalidade.excluirNacionalidade(id)
 
     response.status(result.status_code)
     response.json(result)

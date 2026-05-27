@@ -107,11 +107,18 @@ const atualizarFilme = async function (filme, id, contentType){
 
                         if(resultDeleteGenero.status){
                             //Manipulação de todos os generos relacionados com o filme
-                            for (let genero of filme.generos) {
+                            for (let genero of filme.genero) {
                                 let filmeGenero = {
                                     "id_filme" : filme.id,
                                     "id_genero" : genero.id
                                 }
+
+                               //Chama a controller do filme genero para inserir os IDs
+                               let resultInsertGenero = await controller_filme_genero.inserirFilmeGenero(filmeGenero)
+
+                               if(!resultInsertGenero){
+                                return message.SUCESS_CREATED_ITEM_WARNING //201 com alerta de dados não inseridos
+                               }
                             }
                         }
 
