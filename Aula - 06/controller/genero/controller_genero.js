@@ -33,7 +33,7 @@ const inserirGenero = async function(genero, contentType) {
 
                 if(result){ //201
 
-                    sexo.id = result
+                    genero.id = result
                     message.DEFAULT_MESSAGE.status = message.SUCESS_CREATED_ITEM.status
                     message.DEFAULT_MESSAGE.status_code = message.SUCESS_CREATED_ITEM.status_code
                     message.DEFAULT_MESSAGE.message = message.SUCESS_CREATED_ITEM.message
@@ -50,7 +50,8 @@ const inserirGenero = async function(genero, contentType) {
         }
         
     } catch (error) {
-
+        console.log(error);
+        
         return message.ERROR_INTERNAL_SERVER_CONTROLLER // 500 (controller)
     }
 }

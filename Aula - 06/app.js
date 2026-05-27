@@ -369,7 +369,7 @@ app.get('/v1/senai/filme/genero/:id', async function(request, response) {
 })
 
 //Endepoint para atualizar Genero
-app.put('/v1/senai/filme/atividade/:id', bodyParserJSON, async function(request, response){
+app.put('/v1/senai/filme/genero/:id', bodyParserJSON, async function(request, response){
 
     //Recebe o content-type da resuisição
     let contentType = request.headers['content-type']
@@ -384,6 +384,17 @@ app.put('/v1/senai/filme/atividade/:id', bodyParserJSON, async function(request,
     response.json(result)
     
 })
+
+//Endepoint para deletar atividade
+app.delete('/v1/senai/filme/genero/:id', async function(request, response) {
+    let id = request.params.id
+
+    let result = await controllerGenero.excluirGenero(id)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
 
 //Endepoint para 
 //Inicia o servidor
